@@ -69,41 +69,22 @@ def calcular_similitud(estudiante_1, estudiante_2):
 
     return 0.6 * similitud_de_intereses + 0.4 * similitud_de_promedio
 
-def crear_relaciones(conn, estudiantes):
+def crear_relaciones(conn, estudiantes, k=3):
+    # Obtener todos los valores de similitud entre cada estudiante y todos los demás
     for i, a in enumerate(estudiantes):
-        for b in estudiantes[i+1:]:
-            sim = calcular_similitud(a, b)
-            if sim > 0.5:
-                query = """
-                MATCH (a:Estudiante {nombre: $nombre_a}), (b:Estudiante {nombre: $nombre_b})
-                MERGE (a)-[r:SIMILAR_A]->(b)
-                MERGE (b)-[r2:SIMILAR_A]->(a)
-                SET r.similitud = $similitud, r2.similitud = $similitud
-                """
-                conn.correr_query(query, {'nombre_a': a['nombre'], 'nombre_b': b['nombre'], 'similitud': sim})
+        similitudes = []
+        for j, b in enumerate(estudiantes):
+            if a["nombre"] != b["nombre"]:
+                sim = calcular_similitud(a,b)
+                similitudes.append((b["nombre"], sim))
 
-# Conectarse a Neo4j
-conn = Neo4jConnection(URI, AUTH)
+        # Obtener los k vecinos más similares
+        vecinos_mas_similares = sorted(similitudes, key=lambda x: x[1], reverse=True)[:k]
 
-# Estudiantes ejemplo
-e1 = crear_estudiante(conn, "Luis Pedro Hernandez", 20, 2, "Ingenieria", "Ingenieria en sistemas", ["IA", "Robotica", "Numeros"], 97)
-e2 = crear_estudiante(conn, "Luis Pedro Figueroa", 20, 2, "Ingenieria", "Ingenieria en sistemas", ["Numeros", "IA", "Arte"], 84)
-e3 = crear_estudiante(conn, "Adair Velasquez", 19, 2, "Ingenieria", "Ingenieria en sistemas", ["Economia", "IA"], 90)
-e4 = crear_estudiante(conn, "Joel Nerio", 18, 2, "Ingenieria", "Ingenieria en sistemas", ["Circuitos", "Economia", "Diseño"], 90)
-
-estudiantes = [e1, e2, e3, e4]
-
-# Relaciones de estudiantes
-crear_relaciones(conn, estudiantes)
-
-# Cursos ejemplo
-c1 = crear_curso(conn, "Calculo III", "Matemáticas")
-c2 = crear_curso(conn, "Estadistica II", "Estadística")
-
-# Ratings de estudiantes a cursos
-agregar_rating(conn, "Luis Pedro Hernandez", "Calculo III", 9)
-agregar_rating(conn, "Luis Pedro Figueroa", "Calculo III", 7)
-agregar_rating(conn, "Joel Nerio", "Estadistica II", 8)
-
-# Cerrar conexión
-conn.cerrar()
+        for nombre_b, sim in vecinos_mas_similares:
+            query = """
+            MATCH (a:Estudiante {nombre: $nombre_a}), (b:Estudiante {nombre: $nombre_b})
+            MERGE (a)-[r:SIMILAR_A]->(b)
+            SET r.similitud = $similitud
+            """
+            conn.correr_query(query, {'nombre_a': a['nombre'], 'nombre_b': nombre_b, 'similitud': sim})
