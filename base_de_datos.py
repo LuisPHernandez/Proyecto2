@@ -1,5 +1,4 @@
 from neo4j import GraphDatabase
-import math
 
 URI = "bolt://localhost"
 AUTH = ("neo4j", "lipelupaadair")
@@ -94,6 +93,8 @@ def crear_relaciones(conn, estudiantes, k=3):
 
 def estudiantes_con_ratings(conn, estudiantes):
     estudiantes_validos = []
+
+    # Revisar todos los estudiantes para que tengan más de 0 ratings
     for est in estudiantes:
         query = """
         MACTH (:Estudiante {nombre: $nombre})-[r:RATED]->(:Curso)
@@ -102,4 +103,6 @@ def estudiantes_con_ratings(conn, estudiantes):
         result = conn.correr_query(query, {'nombre': est['nombre']})
         if result.single()['cantidad'] > 0:
             estudiantes_validos.append(est)
+
+    # Devolver solo estudiantes que hayan rateado un curso en el pasado
     return estudiantes_validos
