@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Recomendación de Cursos - UVG</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='estudiante_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="brand-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">UVG</span>
+                    <span class="brand-subtitle">Course AI</span>
+                </div>
+            </div>
+            <div class="nav-menu">
+                <a href="#" class="nav-item active">Inicio</a>
+                <a href="#" class="nav-item">Acerca de</a>
+                <a href="#" class="nav-item">Soporte</a>
+                <button class="nav-cta">
+                    <i class="fas fa-user"></i>
+                    Mi Perfil
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-background">
+            <div class="hero-shape shape-1"></div>
+            <div class="hero-shape shape-2"></div>
+            <div class="hero-shape shape-3"></div>
+        </div>
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-sparkles"></i>
+                    Powered by AI
+                </div>
+                <h1 class="hero-title">
+                    Encuentra los <span class="gradient-text">cursos perfectos</span> para tu futuro
+                </h1>
+                <p class="hero-description">
+                    Sistema inteligente de recomendación que analiza tu perfil académico y te sugiere los mejores cursos
+                    para acelerar tu carrera profesional.
+                </p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Cursos</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">15</div>
+                        <div class="stat-label">Facultades</div>
+                    </div>
+                    <div class="stat-divider"></div>
+                    <div class="stat-item">
+                        <div class="stat-number">98%</div>
+                        <div class="stat-label">Satisfacción</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="floating-cards">
+                    <div class="floating-card card-1">
+                        <i class="fas fa-brain"></i>
+                        <span>IA Avanzada</span>
+                    </div>
+                    <div class="floating-card card-2">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Análisis Predictivo</span>
+                    </div>
+                    <div class="floating-card card-3">
+                        <i class="fas fa-target"></i>
+                        <span>Recomendaciones Precisas</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Actions -->
+    <section class="main-actions">
+        <div class="container">
+            <div class="section-header">
+                <h2>¿Qué quieres hacer hoy?</h2>
+                <p>Selecciona una opción para comenzar tu experiencia personalizada</p>
+            </div>
+
+            <div class="actions-grid">
+                <div class="action-card primary">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div class="card-badge">Recomendado</div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Ver cursos recomendados</h3>
+                        <p>Descubre cursos personalizados basados en tu perfil académico y objetivos profesionales</p>
+                    </div>
+                    <button class="card-button">
+                        <span>Ver Recomendaciones</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-edit"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Llenar test de información personal</h3>
+                        <p>Completa tu perfil para recibir recomendaciones más precisas</p>
+                    </div>
+                    <a href="{{url_for('formulario') }}" class="card-button">
+                        <span>Comenzar Test</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-tasks"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Gestionar cursos tomados</h3>
+                        <p>Administra tu historial académico y cursos completados</p>
+                    </div>
+                    <button class="card-button">
+                        <span>Gestionar Cursos</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="action-card">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <h3>Ver todos los cursos disponibles</h3>
+                        <p>Explora el catálogo completo de cursos disponibles</p>
+                    </div>
+                    <button class="card-button">
+                        <span>Explorar Catálogo</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <div class="container">
+            <div class="features-content">
+                <div class="features-text">
+                    <h2>¿Por qué elegir nuestro sistema?</h2>
+                    <p>Tecnología de vanguardia al servicio de tu educación</p>
+                </div>
+                <div class="features-grid">
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h4>Inteligencia Artificial</h4>
+                        <p>Algoritmos de machine learning que aprenden de tus preferencias</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-zap"></i>
+                        </div>
+                        <h4>Resultados Instantáneos</h4>
+                        <p>Recomendaciones en tiempo real adaptadas a tu perfil</p>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Datos Seguros</h4>
+                        <p>Tu información académica protegida con los más altos estándares</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="brand-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG Course AI</span>
+                        <span class="brand-subtitle">Universidad del Valle de Guatemala</span>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <div class="link-group">
+                        <h4>Plataforma</h4>
+                        <a href="#">Portal Estudiantil</a>
+                        <a href="#">Biblioteca Digital</a>
+                        <a href="#">Campus Virtual</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Soporte</h4>
+                        <a href="#">Centro de Ayuda</a>
+                        <a href="#">Contacto</a>
+                        <a href="#">FAQ</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Universidad</h4>
+                        <a href="#">Acerca de UVG</a>
+                        <a href="#">Noticias</a>
+                        <a href="#">Eventos</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Universidad del Valle de Guatemala. Todos los derechos reservados.</p>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

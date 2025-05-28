@@ -1,22 +1,4 @@
-preguntas_personalidad = [
-    {
-        "pregunta": "¿Prefieres resolver problemas usando lógica y datos?",
-        "opciones": ["Sí", "No"]
-    },
-    {
-        "pregunta": "¿Te gusta inventar nuevas ideas o soluciones?",
-        "opciones": ["Sí", "No"]
-    },
-    {
-        "pregunta": "¿Prefieres seguir un procedimiento probado antes que improvisar?",
-        "opciones": ["Sí", "No"]
-    },
-    {
-        "pregunta": "¿Disfrutas trabajar en equipo y hablar con muchas personas?",
-        "opciones": ["Sí", "No"]
-    }
-]
-
+from forms import preguntas_personalidad
 
 def procesar_personalidad(respuestas):
     conteo = {}

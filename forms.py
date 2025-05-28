@@ -1,0 +1,38 @@
+# Datos para formularios
+facultades = {
+    "Ingeniería": ["Biomédica", "Ciencias de la Computación", "Industrial", "Mecánica"],
+    "Ciencias Sociales": ["Antropología", "Arqueología", "Psicología"],
+    "Ciencias y Humanidades": ["Biología", "Bioquímica", "Física"],
+    "Educación": ["Educación Musical", "Educación Primaria", "Educación Inclusiva"]
+}
+
+intereses = [
+    "Tecnología", "Salud", "Educación", "Investigación", "Arte", "Ciencias Naturales", "Psicología", "Historia"
+]
+
+# Preguntas de personalidad
+preguntas_personalidad = [
+    {
+        "pregunta": "¿Prefieres resolver problemas usando lógica y datos?",
+        "opciones": ["Sí", "No"]
+    },
+    {
+        "pregunta": "¿Te gusta inventar nuevas ideas o soluciones?",
+        "opciones": ["Sí", "No"]
+    },
+    {
+        "pregunta": "¿Prefieres seguir un procedimiento probado antes que improvisar?",
+        "opciones": ["Sí", "No"]
+    },
+    {
+        "pregunta": "¿Disfrutas trabajar en equipo y hablar con muchas personas?",
+        "opciones": ["Sí", "No"]
+    }
+]
+
+puntajes = {
+    0: {"Sí": {"Analítico": 2}, "No": {"Sociable": 1, "Creativo": 1}},
+    1: {"Sí": {"Creativo": 2}, "No": {"Práctico": 1}},
+    2: {"Sí": {"Práctico": 2}, "No": {"Creativo": 1}},
+    3: {"Sí": {"Sociable": 2}, "No": {"Analítico": 1}}
+}

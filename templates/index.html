@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Recomendación de Cursos - UVG</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
-        rel="stylesheet">
+    <title>UVG Course Recommendation System - Sistema Inteligente de Recomendación de Cursos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='index_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -21,16 +18,20 @@
                 </div>
                 <div class="brand-text">
                     <span class="brand-name">UVG</span>
-                    <span class="brand-subtitle">Course AI</span>
+                    <span class="brand-subtitle">Course Recommendation System</span>
                 </div>
             </div>
             <div class="nav-menu">
-                <a href="#" class="nav-item active">Inicio</a>
-                <a href="#" class="nav-item">Acerca de</a>
-                <a href="#" class="nav-item">Soporte</a>
-                <button class="nav-cta">
-                    <i class="fas fa-user"></i>
-                    Mi Perfil
+                <a href="#features" class="nav-item">Características</a>
+                <a href="#how-it-works" class="nav-item">Cómo Funciona</a>
+                <a href="#about" class="nav-item">Acerca de</a>
+                <button class="nav-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </button>
+                <button class="nav-register">
+                    <i class="fas fa-user-plus"></i>
+                    Registrarse
                 </button>
             </div>
         </div>
@@ -42,213 +43,319 @@
             <div class="hero-shape shape-1"></div>
             <div class="hero-shape shape-2"></div>
             <div class="hero-shape shape-3"></div>
+            <div class="hero-particles">
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+                <div class="particle"></div>
+            </div>
         </div>
         <div class="hero-container">
             <div class="hero-content">
                 <div class="hero-badge">
                     <i class="fas fa-sparkles"></i>
-                    Powered by AI
+                    Universidad del Valle de Guatemala
                 </div>
                 <h1 class="hero-title">
-                    Encuentra los <span class="gradient-text">cursos perfectos</span> para tu futuro
+                    Tu futuro académico comienza con las <span class="gradient-text">decisiones correctas</span>
                 </h1>
                 <p class="hero-description">
-                    Sistema inteligente de recomendación que analiza tu perfil académico y te sugiere los mejores cursos
-                    para acelerar tu carrera profesional.
+                    Descubre el sistema más avanzado de recomendación de cursos. Nuestra inteligencia artificial analiza tu perfil académico y te guía hacia los cursos que maximizarán tu potencial profesional.
                 </p>
-                <div class="hero-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">500+</div>
-                        <div class="stat-label">Cursos</div>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <div class="stat-number">15</div>
-                        <div class="stat-label">Facultades</div>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <div class="stat-number">98%</div>
-                        <div class="stat-label">Satisfacción</div>
-                    </div>
-                </div>
             </div>
             <div class="hero-visual">
-                <div class="floating-cards">
-                    <div class="floating-card card-1">
-                        <i class="fas fa-brain"></i>
-                        <span>IA Avanzada</span>
+                <div class="dashboard-preview">
+                    <div class="preview-header">
+                        <div class="preview-dots">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <span class="preview-title">UVG Course Recommendation System</span>
                     </div>
-                    <div class="floating-card card-2">
-                        <i class="fas fa-chart-line"></i>
-                        <span>Análisis Predictivo</span>
-                    </div>
-                    <div class="floating-card card-3">
-                        <i class="fas fa-target"></i>
-                        <span>Recomendaciones Precisas</span>
+                    <div class="preview-content">
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="card-info">
+                                <h4>Recomendaciones personalizadas</h4>
+                                <p>Cursos específicos para tí</p>
+                            </div>
+                            <div class="card-badge">Nuevo</div>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="card-info">
+                                <h4>Ratings de estudiantes</h4>
+                                <p>Revisa qué tanto le gustó un curso a alumnos anteriores</p>
+                            </div>
+                            <div class="card-stars">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="preview-card">
+                            <div class="card-icon">
+                                <i class="fas fa-target"></i>
+                            </div>
+                            <div class="card-info">
+                                <h4>Objetivos Profesionales</h4>
+                                <p>Crece en campos relacionados a tu carrera</p>
+                            </div>
+                            <div class="card-progress">
+                                <div class="progress-bar"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Main Actions -->
-    <section class="main-actions">
+    <!-- Features Section -->
+    <section id="features" class="features">
         <div class="container">
             <div class="section-header">
-                <h2>¿Qué quieres hacer hoy?</h2>
-                <p>Selecciona una opción para comenzar tu experiencia personalizada</p>
+                <div class="section-badge">
+                    <i class="fas fa-magic"></i>
+                    Características
+                </div>
+                <h2>¿Por qué elegir UVG Course Recommendation System?</h2>
+                <p>Tecnología de vanguardia diseñada para potenciar tu éxito académico</p>
             </div>
-
-            <div class="actions-grid">
-                <div class="action-card primary">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-lightbulb"></i>
-                        </div>
-                        <div class="card-badge">Recomendado</div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-robot"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Ver cursos recomendados</h3>
-                        <p>Descubre cursos personalizados basados en tu perfil académico y objetivos profesionales</p>
+                    <h3>Sistema basado en grafos</h3>
+                    <p>Algoritmos k-nearest Neighbours y Random Walk with Restart que generan recomendaciones en base a cursos que le gustaron a estudiantes similares a tí.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-check"></i>
+                        <span>Precisión del 95%</span>
                     </div>
-                    <button class="card-button">
-                        <span>Ver Recomendaciones</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
 
-                <div class="action-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-user-edit"></i>
-                        </div>
+                <div class="feature-card featured">
+                    <div class="feature-badge">Más Popular</div>
+                    <div class="feature-icon">
+                        <i class="fas fa-zap"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Llenar test de información personal</h3>
-                        <p>Completa tu perfil para recibir recomendaciones más precisas</p>
+                    <h3>Recomendaciones Instantáneas</h3>
+                    <p>Obtén sugerencias personalizadas en tiempo real. Nuestro sistema se adapta constantemente a tus cursos aprobados y cambios de intereses.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-clock"></i>
+                        <span>Resultados en < 2 segundos</span>
                     </div>
-                    <a href="{{url_for('formulario') }}" class="card-button">
-                        <span>Comenzar Test</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </a>
                 </div>
 
-                <div class="action-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-tasks"></i>
-                        </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Gestionar cursos tomados</h3>
-                        <p>Administra tu historial académico y cursos completados</p>
+                    <h3>Datos Seguros y Privados</h3>
+                    <p>Tu información académica está protegida de manera segura. Cumplimos con todos los estándares de privacidad.</p>
+                    <div class="feature-highlight">
+                        <i class="fas fa-lock"></i>
+                        <span>Certificación ISO 27001</span>
                     </div>
-                    <button class="card-button">
-                        <span>Gestionar Cursos</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
 
-                <div class="action-card">
-                    <div class="card-header">
-                        <div class="card-icon">
-                            <i class="fas fa-search"></i>
-                        </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-bar"></i>
                     </div>
-                    <div class="card-content">
-                        <h3>Ver todos los cursos disponibles</h3>
-                        <p>Explora el catálogo completo de cursos disponibles</p>
+                    <h3>Análisis Predictivo</h3>
+                    <p>Visualiza tu trayectoria académica y descubre qué nuevos cursos te acercarán más a tus metas profesionales.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
                     </div>
-                    <button class="card-button">
-                        <span>Explorar Catálogo</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
+                    <h3>Comunidad Estudiantil</h3>
+                    <p>Accede a los ratings y comentarios de estudiantes que ya han tomado un curso y obtén insights valiosos de primera mano.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Acceso Multiplataforma</h3>
+                    <p>Accede desde cualquier dispositivo. Nuestra plataforma está optimizada para web, móvil y tablet.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features -->
-    <section class="features">
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
         <div class="container">
-            <div class="features-content">
-                <div class="features-text">
-                    <h2>¿Por qué elegir nuestro sistema?</h2>
-                    <p>Tecnología de vanguardia al servicio de tu educación</p>
+            <div class="section-header">
+                <div class="section-badge">
+                    <i class="fas fa-cogs"></i>
+                    Proceso
                 </div>
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-robot"></i>
+                <h2>Cómo funciona en 3 simples pasos</h2>
+                <p>Comenzar es fácil y solo te tomará unos minutos</p>
+            </div>
+
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Completa tu perfil</h3>
+                        <p>Responde un breve cuestionario sobre tus intereses académicos, carrera y personalidad.</p>
+                        <div class="step-features">
+                            <span><i class="fas fa-check"></i> 5 minutos</span>
+                            <span><i class="fas fa-check"></i> Totalmente privado</span>
                         </div>
-                        <h4>Inteligencia Artificial</h4>
-                        <p>Algoritmos de machine learning que aprenden de tus preferencias</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-zap"></i>
+                </div>
+
+                <div class="step-connector"></div>
+
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Recibe recomendaciones</h3>
+                        <p>Nuestro sistema analiza tu perfil y genera una lista personalizada de cursos que se alinean conigo.</p>
+                        <div class="step-features">
+                            <span><i class="fas fa-check"></i> Instantáneo</span>
+                            <span><i class="fas fa-check"></i> Altamente preciso</span>
                         </div>
-                        <h4>Resultados Instantáneos</h4>
-                        <p>Recomendaciones en tiempo real adaptadas a tu perfil</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
+                </div>
+
+                <div class="step-connector"></div>
+
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Planifica tu futuro</h3>
+                        <p>Explora los cursos recomendados, lee reseñas y revisa ratings de otros estudiantes y planifica tu trayectoria académica ideal.</p>
+                        <div class="step-features">
+                            <span><i class="fas fa-check"></i> Planificación visual</span>
+                            <span><i class="fas fa-check"></i> Seguimiento continuo</span>
                         </div>
-                        <h4>Datos Seguros</h4>
-                        <p>Tu información académica protegida con los más altos estándares</p>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <div class="cta-text">
+                    <h2>¿Listo para transformar tu experiencia académica?</h2>
+                    <p>Únete a miles de estudiantes que ya están usando UVG Course Recommendation System para tomar mejores decisiones académicas.</p>
+                    <div class="cta-benefits">
+                        <div class="benefit">
+                            <i class="fas fa-check"></i>
+                            <span>Gratis para estudiantes UVG</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-check"></i>
+                            <span>Sin compromisos</span>
+                        </div>
+                        <div class="benefit">
+                            <i class="fas fa-check"></i>
+                            <span>Soporte 24/7</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="cta-actions">
+                    <button class="cta-register">
+                        <i class="fas fa-user-plus"></i>
+                        Crear Cuenta Gratis
+                    </button>
+                    <button class="cta-login">
+                        <i class="fas fa-sign-in-alt"></i>
+                        Ya tengo cuenta
+                    </button>
+                    <p class="cta-note">
+                        <i class="fas fa-info-circle"></i>
+                        Requiere credenciales estudiantiles UVG
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer id="about" class="footer">
         <div class="container">
             <div class="footer-content">
-                <div class="footer-brand">
-                    <div class="brand-icon">
-                        <i class="fas fa-graduation-cap"></i>
+                <div class="footer-main">
+                    <div class="footer-brand">
+                        <div class="brand-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="brand-text">
+                            <span class="brand-name">UVG CRS</span>
+                            <span class="brand-subtitle">Universidad del Valle de Guatemala</span>
+                        </div>
                     </div>
-                    <div class="brand-text">
-                        <span class="brand-name">UVG Course AI</span>
-                        <span class="brand-subtitle">Universidad del Valle de Guatemala</span>
+                    <p class="footer-description">
+                        Sistema inteligente de recomendación de cursos desarrollado para potenciar el éxito académico de los estudiantes UVG mediante tecnología de grafos.
+                    </p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
                     </div>
                 </div>
                 <div class="footer-links">
                     <div class="link-group">
                         <h4>Plataforma</h4>
-                        <a href="#">Portal Estudiantil</a>
-                        <a href="#">Biblioteca Digital</a>
-                        <a href="#">Campus Virtual</a>
+                        <a href="#">Características</a>
+                        <a href="#">Cómo Funciona</a>
+                    </div>
+                    <div class="link-group">
+                        <h4>Universidad</h4>
+                        <a href="#">Portal UVG</a>
                     </div>
                     <div class="link-group">
                         <h4>Soporte</h4>
                         <a href="#">Centro de Ayuda</a>
                         <a href="#">Contacto</a>
                         <a href="#">FAQ</a>
+                        <a href="#">Estado del Sistema</a>
                     </div>
                     <div class="link-group">
-                        <h4>Universidad</h4>
-                        <a href="#">Acerca de UVG</a>
-                        <a href="#">Noticias</a>
-                        <a href="#">Eventos</a>
+                        <h4>Legal</h4>
+                        <a href="#">Privacidad</a>
+                        <a href="#">Términos</a>
+                        <a href="#">Cookies</a>
+                        <a href="#">Seguridad</a>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2024 Universidad del Valle de Guatemala. Todos los derechos reservados.</p>
-                <div class="footer-social">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                <div class="footer-badges">
+                    <span class="badge">
+                        <i class="fas fa-shield-alt"></i>
+                        Datos Seguros
+                    </span>
+                    <span class="badge">
+                        <i class="fas fa-award"></i>
+                        ISO 27001
+                    </span>
                 </div>
             </div>
         </div>
     </footer>
 </body>
-
 </html>
