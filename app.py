@@ -1,7 +1,6 @@
-from flask import Flask, render_template,request,redirect,url_for
-from Test import procesar_personalidad
 from flask import Flask, render_template, url_for, request, redirect, flash, session
 import flask_sqlalchemy
+from Test import procesar_personalidad
 
 app = Flask(__name__)
 
