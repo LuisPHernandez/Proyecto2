@@ -1,5 +1,5 @@
 from kNN import recomendar_cursos_knn
-
+from RWR import recomendar_cursos_rwr
 
 def curso_ya_tomado(conn, nombre_estudiante, nombre_curso):
     # Query devuelve los cursos que ya fueron tomados, porque ya fueron rateados, por el estudiante objetivo
@@ -7,8 +7,8 @@ def curso_ya_tomado(conn, nombre_estudiante, nombre_curso):
     MATCH (:Estudiante {nombre: $nombre_estudiante})-[r.RATED]->(:Curso {nombre: $nombre_curso})
     RETURN COUNT(r) > 0 AS tomado
     """
-    result = conn.correr_query(query, {'nombre_estudiante': nombre_estudiante, 'nombre_curso': nombre_curso})
-    return result.single()['tomado']
+    resultado = conn.correr_query(query, {'nombre_estudiante': nombre_estudiante, 'nombre_curso': nombre_curso})
+    return resultado.single()['tomado']
 
 def recomendar_cursos_hibrido(conn, nombre_estudiante, k=3, n=5, nota_minima=7):
     peso_knn = 1.0
@@ -32,7 +32,6 @@ def recomendar_cursos_hibrido(conn, nombre_estudiante, k=3, n=5, nota_minima=7):
         return cursos_filtrados
     
     # 4. Si aún no hay suficientes, obtener cursos adicionales con RWR, normalizar y aplicar peso
-    # TODO implementar función de recomendación por RWR
     cursos_rwr_raw = recomendar_cursos_rwr(conn, nombre_estudiante)
     cursos_rwr_norm = normalizar_escala_de_similitud(cursos_rwr_raw)
     cursos_rwr = [(curso, round(puntaje * peso_rwr, 2)) for curso, puntaje in cursos_rwr_norm]
@@ -61,4 +60,4 @@ def normalizar_escala_de_similitud(puntajes, escala=10.0):
         return [(s[0], escala / 2.0) for s in puntajes] # Puntaje medio si todos son iguales
     
     # Devuelve la lista de puntajes normalizada
-    return [(s[0], escala * (s[1] - min_s) / (max_s - min_s) for s in puntajes)]
+    return [(s[0], escala * (s[1] - min_s) / (max_s - min_s)) for s in puntajes]
