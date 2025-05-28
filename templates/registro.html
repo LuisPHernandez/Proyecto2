@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Cuenta - UVG Course AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='registro_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="landing.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <span class="login-prompt">¿Ya tienes cuenta?</span>
+                <a href="/login" class="login-link">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Iniciar Sesión
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="register-container">
+            <!-- Left Side - Registration Form -->
+            <div class="register-form-container">
+                <div class="register-form">
+                    <!-- Progress Indicator -->
+                    <div class="progress-indicator">
+                        <div class="progress-step active" data-step="1">
+                            <div class="step-number">1</div>
+                            <span>Crear Cuenta</span>
+                        </div>
+                    </div>
+
+                    <div class="form-header">
+                        <h2>Crear tu cuenta</h2>
+                        <p>Únete a la comunidad UVG Course Recommendation System</p>
+                    </div>
+
+                    <!-- Registration Form -->
+                    <form class="form step-1 active" id="registerForm" method="POST" action="/registro">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="firstName" class="form-label">
+                                    <i class="fas fa-user"></i>
+                                    Nombre
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    class="form-input" 
+                                    placeholder="Tu nombre"
+                                    required
+                                    autocomplete="given-name"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="lastName" class="form-label">
+                                    <i class="fas fa-user"></i>
+                                    Apellido
+                                </label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    class="form-input" 
+                                    placeholder="Tu apellido"
+                                    required
+                                    autocomplete="family-name"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email" class="form-label">
+                                <i class="fas fa-envelope"></i>
+                                Correo Electrónico UVG
+                            </label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                class="form-input" 
+                                placeholder="correo@uvg.edu.gt"
+                                required
+                                autocomplete="email"
+                            >
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Debe ser tu correo institucional UVG
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock"></i>
+                                Contraseña
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="password" 
+                                    name="password" 
+                                    class="form-input" 
+                                    placeholder="Crea una contraseña segura"
+                                    required
+                                    autocomplete="new-password"
+                                >
+                                <button type="button" class="password-toggle" id="passwordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="password-strength">
+                                <div class="strength-bar">
+                                    <div class="strength-fill"></div>
+                                </div>
+                                <span class="strength-text">Fortaleza de contraseña</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="confirmPassword" class="form-label">
+                                <i class="fas fa-lock"></i>
+                                Confirmar Contraseña
+                            </label>
+                            <div class="password-input">
+                                <input 
+                                    type="password" 
+                                    id="confirmPassword" 
+                                    name="confirmPassword" 
+                                    class="form-input" 
+                                    placeholder="Confirma tu contraseña"
+                                    required
+                                    autocomplete="new-password"
+                                >
+                                <button type="button" class="password-toggle" id="confirmPasswordToggle">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="terms" name="terms" required>
+                                <span class="checkmark"></span>
+                                Acepto los <a href="#" class="link">Términos y Condiciones</a> y la <a href="#" class="link">Política de Privacidad</a>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="register-button">
+                            <span>Crear Cuenta</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+
+                        <div class="form-divider">
+                            <span>o</span>
+                        </div>
+
+                        <button type="button" class="sso-button">
+                            <i class="fas fa-university"></i>
+                            Registrarse con Portal UVG
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side - Benefits -->
+            <div class="register-benefits">
+                <div class="benefits-content">
+                    <div class="benefits-header">
+                        <h2>¿Por qué unirte a UVG Course Recommendation System?</h2>
+                        <p>Descubre todas las ventajas que tendrás como miembro</p>
+                    </div>
+
+                    <div class="benefits-list">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Recomendaciones Inteligentes</h4>
+                                <p>Sistema avanzado que recomienda cursos de acuerdo a tu perfil de estudiante</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Seguimiento de Progreso</h4>
+                                <p>Visualiza tu avance académico y planifica tu futuro profesional</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Comunidad Estudiantil</h4>
+                                <p>Conecta con otros estudiantes y comparte experiencias</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Datos Seguros</h4>
+                                <p>Tu información académica protegida con los más altos estándares</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Acceso Multiplataforma</h4>
+                                <p>Disponible en web, móvil y tablet para que estudies donde quieras</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Soporte 24/7</h4>
+                                <p>Asistencia técnica y académica disponible cuando la necesites</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p id="loadingText">Creando tu cuenta...</p>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="success-modal" id="successModal">
+        <div class="modal-content">
+            <div class="success-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>¡Cuenta creada exitosamente!</h3>
+            <p>Bienvenido a UVG Course AI. Tu cuenta ha sido verificada y ya puedes comenzar a usar la plataforma.</p>
+            <button class="success-button" onclick="goToDashboard()">
+                <span>Ir al Dashboard</span>
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script src="register-script.js"></script>
+</body>
+</html>

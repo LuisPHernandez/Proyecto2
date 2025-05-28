@@ -36,16 +36,46 @@ def login():
             flash('Usuario o password inválido', 'error')
     return render_template('login.html')
 
+@app.route('/registro', methods=['GET', 'POST'])
+def registro():
+    if request.method == 'POST':
+        nombre = request.form['firstName']
+        apellido = request.form['lastName']
+        email = request.form['email']
+        password = request.form['password']
+        confirm_password = request.form['confirmPassword']
+
+        if password != confirm_password:
+            flash('Las contraseñas no coinciden.', 'error')
+            return render_template('registro.html')
+
+        if model.Usuario.query.filter_by(username=email).first():
+            flash('Este correo ya está registrado.', 'error')
+            return render_template('registro.html')
+
+        # Obtiene el ID correspondiente al tipo 'Estudiante'
+        tipo_estudiante = model.UsuarioTipo.query.filter_by(tipo='Estudiante').first()
+
+        if not tipo_estudiante:
+            flash('Error: tipo de usuario "Estudiante" no está definido.', 'error')
+            return render_template('registro.html')
+
+        nuevo_usuario = model.Usuario(username=email, password=password, tipo=tipo_estudiante.id)
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+
+        flash('Cuenta creada exitosamente. Inicia sesión.', 'success')
+        return redirect(url_for('login'))
+
+    return render_template('registro.html')
+
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
 
 @app.route('/estudiante')
-def maestro():
+def estudiante():
     return render_template('estudiante.html')
-
-if (__name__ == "__main__"):
-    app.run(debug=True)
 
 @app.route('/formulario')
 def formulario():
@@ -61,3 +91,6 @@ def resultado():
     datos = request.form.to_dict(flat=True)
     resultado_final = procesar_personalidad(datos)
     return render_template("resultado.html", resultado=resultado_final)
+
+if (__name__ == "__main__"):
+    app.run(debug=True)
