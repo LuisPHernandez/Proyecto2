@@ -2,18 +2,16 @@ from flask import Flask, render_template, url_for, request, redirect, flash, ses
 import flask_sqlalchemy
 from test import procesar_personalidad
 from forms import *
+from extensions import db
 
-app = Flask(__name__)
-
-# Configuración para usar SQLite como base de datos
+app = Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///basedatos.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.secret_key = '1234'
 
-# Inicializar la base de datos
-db = flask_sqlalchemy.SQLAlchemy(app)
-import usuarios_model as model
+db.init_app(app)
 
 with app.app_context():
+    import usuarios_model as model
     db.create_all()
     db.session.commit()
 
@@ -24,9 +22,9 @@ def home():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
-        usuario = model.Usuario.query.filter_by(username=username, password=password).first()
+        usuario = model.Usuario.query.filter_by(username=email, password=password).first()
 
         if usuario != None:
 

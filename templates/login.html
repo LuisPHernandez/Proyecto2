@@ -83,7 +83,7 @@
                         <p>Ingresa con tu cuenta estudiantil UVG</p>
                     </div>
 
-                    <form class="form" id="loginForm">
+                    <form class="form" id="loginForm" method="POST" action="{{ url_for('login') }}">
                         <div class="form-group">
                             <label for="email" class="form-label">
                                 <i class="fas fa-envelope"></i>
@@ -168,64 +168,5 @@
             <p>Verificando credenciales...</p>
         </div>
     </div>
-
-    <script>
-        // Password toggle functionality
-        const passwordToggle = document.getElementById('passwordToggle');
-        const passwordInput = document.getElementById('password');
-
-        passwordToggle.addEventListener('click', function() {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-            
-            const icon = this.querySelector('i');
-            icon.classList.toggle('fa-eye');
-            icon.classList.toggle('fa-eye-slash');
-        });
-
-        // Form submission
-        const loginForm = document.getElementById('loginForm');
-        const loadingOverlay = document.getElementById('loadingOverlay');
-
-        loginForm.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Show loading
-            loadingOverlay.classList.add('active');
-            
-            // Simulate login process
-            setTimeout(() => {
-                loadingOverlay.classList.remove('active');
-                // Here you would normally redirect to the dashboard
-                alert('Login exitoso! Redirigiendo al dashboard...');
-            }, 2000);
-        });
-
-        // Email validation for UVG domain
-        const emailInput = document.getElementById('email');
-        emailInput.addEventListener('blur', function() {
-            const email = this.value;
-            if (email && !email.endsWith('@uvg.edu.gt')) {
-                this.classList.add('error');
-                // You could show an error message here
-            } else {
-                this.classList.remove('error');
-            }
-        });
-
-        // Form input animations
-        const formInputs = document.querySelectorAll('.form-input');
-        formInputs.forEach(input => {
-            input.addEventListener('focus', function() {
-                this.parentElement.classList.add('focused');
-            });
-            
-            input.addEventListener('blur', function() {
-                if (!this.value) {
-                    this.parentElement.classList.remove('focused');
-                }
-            });
-        });
-    </script>
 </body>
 </html>

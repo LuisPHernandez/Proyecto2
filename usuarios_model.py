@@ -1,4 +1,4 @@
-from app import db, app
+from extensions import db
 
 # Catálogo de tipos de usuario
 class UsuarioTipo(db.Model):
@@ -38,7 +38,7 @@ def _inicializar_tipos_usuario(*args, **kwargs):
 
 def _inicializar_usuarios(*args, **kwargs):
     # Crear usuarios default
-    admin = Usuario('admin', app.config['ADMIN_PASSWORD'], 1)
+    admin = Usuario('admin@uvg.edu.gt', 'admin', 1)
     db.session.add(admin)
     db.session.commit()
 
