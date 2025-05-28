@@ -70,10 +70,13 @@ def calcular_similitud(estudiante_1, estudiante_2):
     return 0.6 * similitud_de_intereses + 0.4 * similitud_de_promedio
 
 def crear_relaciones(conn, estudiantes, k=3):
+    # Filtrar estudiantes para que solo se tenga relación con estudiantes que han tomado un curso previamente
+    estudiantes_filtrados = estudiantes_con_ratings(conn, estudiantes)  
+
     # Obtener todos los valores de similitud entre cada estudiante y todos los demás
-    for i, a in enumerate(estudiantes):
+    for i, a in enumerate(estudiantes_filtrados):
         similitudes = []
-        for j, b in enumerate(estudiantes):
+        for j, b in enumerate(estudiantes_filtrados):
             if a["nombre"] != b["nombre"]:
                 sim = calcular_similitud(a,b)
                 similitudes.append((b["nombre"], sim))
@@ -88,3 +91,15 @@ def crear_relaciones(conn, estudiantes, k=3):
             SET r.similitud = $similitud
             """
             conn.correr_query(query, {'nombre_a': a['nombre'], 'nombre_b': nombre_b, 'similitud': sim})
+
+def estudiantes_con_ratings(conn, estudiantes):
+    estudiantes_validos = []
+    for est in estudiantes:
+        query = """
+        MACTH (:Estudiante {nombre: $nombre})-[r:RATED]->(:Curso)
+        RETURN COUNT(r) AS cantidad
+        """
+        result = conn.correr_query(query, {'nombre': est['nombre']})
+        if result.single()['cantidad'] > 0:
+            estudiantes_validos.append(est)
+    return estudiantes_validos
