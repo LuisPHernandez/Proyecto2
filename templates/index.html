@@ -14,7 +14,7 @@
         <div class="nav-container">
             <div class="nav-brand">
                 <div class="brand-icon">
-                    <i class="fas fa-graduation-cap"></i>
+                    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
                 </div>
                 <div class="brand-text">
                     <span class="brand-name">UVG</span>
@@ -25,14 +25,14 @@
                 <a href="#features" class="nav-item">Características</a>
                 <a href="#how-it-works" class="nav-item">Cómo Funciona</a>
                 <a href="#about" class="nav-item">Acerca de</a>
-                <button class="nav-login">
+                <a href="/login" class="nav-login">
                     <i class="fas fa-sign-in-alt"></i>
                     Iniciar Sesión
-                </button>
-                <button class="nav-register">
+                </a>
+                <a href="/register" class="nav-register">
                     <i class="fas fa-user-plus"></i>
                     Registrarse
-                </button>
+                </a>
             </div>
         </div>
     </nav>
@@ -87,7 +87,7 @@
                         </div>
                         <div class="preview-card">
                             <div class="card-icon">
-                                <i class="fas fa-chart-line"></i>
+                                <i class="far fa-star"></i>
                             </div>
                             <div class="card-info">
                                 <h4>Ratings de estudiantes</h4>
@@ -103,7 +103,7 @@
                         </div>
                         <div class="preview-card">
                             <div class="card-icon">
-                                <i class="fas fa-target"></i>
+                                <i class="fas fa-chart-line"></i>
                             </div>
                             <div class="card-info">
                                 <h4>Objetivos Profesionales</h4>
@@ -275,14 +275,14 @@
                     </div>
                 </div>
                 <div class="cta-actions">
-                    <button class="cta-register">
+                    <a href="/register" class="cta-register">
                         <i class="fas fa-user-plus"></i>
                         Crear Cuenta Gratis
-                    </button>
-                    <button class="cta-login">
+                    </a>
+                    <a href="/login" class="cta-login">
                         <i class="fas fa-sign-in-alt"></i>
                         Ya tengo cuenta
-                    </button>
+                    </a>
                     <p class="cta-note">
                         <i class="fas fa-info-circle"></i>
                         Requiere credenciales estudiantiles UVG
@@ -299,10 +299,10 @@
                 <div class="footer-main">
                     <div class="footer-brand">
                         <div class="brand-icon">
-                            <i class="fas fa-graduation-cap"></i>
+                            <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
                         </div>
                         <div class="brand-text">
-                            <span class="brand-name">UVG CRS</span>
+                            <span class="brand-name">Course Recommendation System</span>
                             <span class="brand-subtitle">Universidad del Valle de Guatemala</span>
                         </div>
                     </div>
