@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Recomendación de Cursos - UVG</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar">
@@ -50,7 +53,8 @@
                     Encuentra los <span class="gradient-text">cursos perfectos</span> para tu futuro
                 </h1>
                 <p class="hero-description">
-                    Sistema inteligente de recomendación que analiza tu perfil académico y te sugiere los mejores cursos para acelerar tu carrera profesional.
+                    Sistema inteligente de recomendación que analiza tu perfil académico y te sugiere los mejores cursos
+                    para acelerar tu carrera profesional.
                 </p>
                 <div class="hero-stats">
                     <div class="stat-item">
@@ -95,7 +99,7 @@
                 <h2>¿Qué quieres hacer hoy?</h2>
                 <p>Selecciona una opción para comenzar tu experiencia personalizada</p>
             </div>
-            
+
             <div class="actions-grid">
                 <div class="action-card primary">
                     <div class="card-header">
@@ -124,10 +128,10 @@
                         <h3>Llenar test de información personal</h3>
                         <p>Completa tu perfil para recibir recomendaciones más precisas</p>
                     </div>
-                    <button class="card-button">
+                    <a href="{{url_for('formulario') }}" class="card-button">
                         <span>Comenzar Test</span>
                         <i class="fas fa-arrow-right"></i>
-                    </button>
+                    </a>
                 </div>
 
                 <div class="action-card">
@@ -246,4 +250,5 @@
         </div>
     </footer>
 </body>
+
 </html>
