@@ -3,6 +3,7 @@ from functools import wraps
 from test import procesar_personalidad
 from forms import *
 from extensions import db
+from base_de_datos import *
 
 app = Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///basedatos.db'
@@ -93,6 +94,23 @@ def estudiante():
 @app.route('/formulario')
 @login_requerido
 def formulario():
+    if request.method == 'POST':
+        nombre = request.form.get('nombre')
+        edad = int(request.form.get('edad'))
+        año = request.form.get('año')
+        facultad = request.form.get('facultad')
+        carrera = request.form.get('carrera')
+        intereses_seleccionados = request.form.getlist('intereses')
+        promedio = float(request.form.get('promedio'))
+
+        # Guardar en Neo4j
+        conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+        crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses_seleccionados, promedio)
+        conn.cerrar()
+
+        flash("Perfil guardado exitosamente", "success")
+        return redirect(url_for('estudiante'))
+
     return render_template("formulario.html", facultades=facultades, intereses= intereses)
 
 @app.route('/test', methods = ['POST'])
