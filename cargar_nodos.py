@@ -12,7 +12,7 @@ facultades = {
     "Escuela de Arquitectura": ["Arquitectura"]
 }
 
-cursos = {
+cursos_base = {
     "Programación Orientada a Objetos": "Aprende a programar usando clases, objetos y principios de diseño de software.",
     "Emprendimiento e Innovación": "Desarrolla ideas de negocio innovadoras y aprende cómo llevarlas al mercado.",
     "Sistemas y Tecnologías Web": "Explora cómo funcionan los sitios web y crea aplicaciones web modernas.",
@@ -43,8 +43,9 @@ apellidos_base = ["Pérez", "García", "Rodríguez", "López", "Martínez", "Sá
                 "Monroy", "Maldonado", "Cuevas", "Coronado", "Schoenbeck", "Aparicio", "Donado", "Flores"]
 
 estudiantes = []
+cursos = []
 
-for i in range(30):
+for i in range(50):
     nombre = f"{random.choice(nombres_base)} {random.choice(apellidos_base)}"
     edad = random.randint(18, 24)
     año = random.randint(1, 5)
@@ -66,6 +67,16 @@ for i in range(30):
     }
     estudiantes.append(estudiante)
 
+for i in range(16):
+    nombre = list(cursos_base.keys())[i]
+    descripcion = list(cursos_base.values())[i]
+
+    curso = {
+        "nombre": nombre,
+        "descripcion": descripcion
+    }
+    cursos.append(curso)
+
 def cargar_estudiantes(conn, estudiantes):
     query = """
     UNWIND $estudiantes AS est
@@ -80,15 +91,25 @@ def cargar_estudiantes(conn, estudiantes):
     """
     conn.correr_query(query, {"estudiantes": estudiantes})
 
-def cargar_cursos(tx, cursos):
-    for curso in cursos:
-        tx.run(
-            "MERGE (c:Curso {nombre: $nombre}) "
-            "SET c.descripcion = $descripcion",
-            nombre=curso["nombre"],
-            descripcion=curso["descripcion"]
-        )
+def cargar_cursos(conn, cursos):
+    query = """
+    UNWIND $cursos AS cur
+    MERGE (c:Curso {nombre: cur.nombre})
+    SET c.descripcion = c.descripcion
+    """
+    conn.correr_query(query, {"cursos": cursos})
+
+def asignar_ratings_a_estudiantes(conn, estudiantes, cursos):
+    for estudiante in estudiantes:
+        num_cursos = random.randint(0, 4)
+        cursos_elegidos = random.sample(cursos, k=num_cursos)
+
+        for curso in cursos_elegidos:
+            rating = round(random.uniform(5, 10), 1)  # Rating con decimales
+            agregar_rating(conn, estudiante["nombre"], curso["nombre"], rating)
 
 conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
 cargar_estudiantes(conn, estudiantes)
+cargar_cursos(conn, cursos)
+asignar_ratings_a_estudiantes(conn, estudiantes, cursos)
 crear_relaciones(conn, estudiantes)

@@ -10,9 +10,19 @@ class Neo4jConnection:
     def cerrar(self):
         self.driver.close()
 
-    def correr_query(self, query, parametros=None):
+    def correr_query(self, query, parametros=None, mode="list"):
         with self.driver.session() as session:
-            return list(session.run(query, parametros))
+            result = session.run(query, parametros)
+
+            if mode == "list":
+                return list(result)
+            elif mode == "single":
+                return result.single()
+            elif mode == "value":
+                record = result.single()
+                return record[0] if record else None
+            else:
+                return result
 
 def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, promedio, personalidad):
     query = """
@@ -100,32 +110,14 @@ def crear_relaciones(conn, estudiantes, k=3):
 def estudiantes_con_ratings(conn, estudiantes):
     estudiantes_validos = []
 
-    # Revisar todos los estudiantes para que tengan más de 0 ratings
     for est in estudiantes:
         query = """
-        MACTH (:Estudiante {nombre: $nombre})-[r:RATED]->(:Curso)
+        MATCH (:Estudiante {nombre: $nombre})-[r:RATED]->(:Curso)
         RETURN COUNT(r) AS cantidad
         """
-        result = conn.correr_query(query, {'nombre': est['nombre']})
-        if result.single()['cantidad'] > 0:
+        record = conn.correr_query(query, {'nombre': est['nombre']}, mode="single")
+
+        if record and record["cantidad"] > 0:
             estudiantes_validos.append(est)
 
-    # Devolver solo estudiantes que hayan rateado un curso en el pasado
     return estudiantes_validos
-
-def obtener_curso_por_id(conn, curso_id):
-    query = """
-            MATCH (c:Curso {id: $id})
-            RETURN c.nombre AS nombre,
-               c.descripcion AS descripcion,
-            """
-    result = conn.correr_query(query, id=curso_id)
-    record = result.single()
-    
-    if record:
-        return {
-            'nombre': record['nombre'],
-            'descripcion': record['descripcion'],
-        }
-    else:
-        return None
