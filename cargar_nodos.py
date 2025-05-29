@@ -45,7 +45,7 @@ apellidos_base = ["Pérez", "García", "Rodríguez", "López", "Martínez", "Sá
 estudiantes = []
 cursos = []
 
-for i in range(50):
+for i in range(25):
     nombre = f"{random.choice(nombres_base)} {random.choice(apellidos_base)}"
     edad = random.randint(18, 24)
     año = random.randint(1, 5)
@@ -82,7 +82,7 @@ def cargar_estudiantes(conn, estudiantes):
     UNWIND $estudiantes AS est
     MERGE (e:Estudiante {nombre: est.nombre})
     SET e.edad = est.edad,
-        e.anio = est.año,
+        e.año_academico = est.año,
         e.facultad = est.facultad,
         e.carrera = est.carrera,
         e.intereses = est.intereses,

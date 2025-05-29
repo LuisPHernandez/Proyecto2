@@ -2,66 +2,162 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Recomendaciones de Cursos</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='formulario_styles.css') }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomendaciones de Cursos - UVG Course Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='recomendaciones_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <h1>Cursos Recomendados para Ti</h1>
-            <p>Basado en tu perfil académico y test de personalidad</p>
-        </header>
-
-        <div class="recommendations">
-            {% for curso in cursos %}
-            <div class="course-card">
-                <h2>{{ curso.nombre }}</h2>
-                <p>{{ curso.descripcion }}</p>
-            </div>
-            {% endfor %}
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
         </div>
     </div>
 
-    <style>
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: #f5f7fa;
-            margin: 0;
-            padding: 20px;
-        }
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .recommendations {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
-        .course-card {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        }
-        .course-card h2 {
-            margin: 0 0 10px;
-        }
-        .course-link {
-            display: inline-block;
-            margin-top: 10px;
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .logout-button {
-            display: inline-block;
-            margin-top: 40px;
-            color: red;
-            font-weight: bold;
-            text-decoration: none;
-        }
-    </style>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <div class="user-info">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Perfil Completado</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Results Header -->
+            <div class="results-header">
+                <div class="completion-badge">
+                    <i class="fas fa-trophy"></i>
+                    <span>¡Perfil Completado!</span>
+                </div>
+                <h1 class="results-title">Tus Cursos Recomendados</h1>
+                <p class="results-subtitle">Basado en tu perfil académico, intereses y estilo de aprendizaje, hemos seleccionado estos cursos especialmente para ti</p>
+            </div>
+
+            <!-- Profile Summary -->
+            <div class="profile-summary">
+                <div class="profile-header">
+                    <div class="profile-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <div class="profile-info">
+                        <h3>Tu Perfil Académico</h3>
+                        <p>Resumen de la información que nos proporcionaste</p>
+                    </div>
+                </div>
+                <div class="profile-details">
+                    <div class="profile-detail">
+                        <div class="profile-detail-icon">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="profile-detail-content">
+                            <span class="profile-detail-label">Facultad</span>
+                            <span class="profile-detail-value">{{ datos_usuario.facultad if datos_usuario.facultad else 'No especificada' }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-detail">
+                        <div class="profile-detail-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="profile-detail-content">
+                            <span class="profile-detail-label">Carrera</span>
+                            <span class="profile-detail-value">{{ datos_usuario.carrera if datos_usuario.carrera else 'No especificada' }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-detail">
+                        <div class="profile-detail-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="profile-detail-content">
+                            <span class="profile-detail-label">Promedio</span>
+                            <span class="profile-detail-value">{{ datos_usuario.promedio if datos_usuario.promedio else 'No especificado' }}</span>
+                        </div>
+                    </div>
+                    <div class="profile-detail">
+                        <div class="profile-detail-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="profile-detail-content">
+                            <span class="profile-detail-label">Estilo de Aprendizaje</span>
+                            <span class="profile-detail-value">{{ datos_usuario.personalidad if datos_usuario.personalidad else 'Analizado' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recommendations Section -->
+            <div class="recommendations-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div>
+                        <h2 class="section-title">Cursos Recomendados</h2>
+                        <p class="section-subtitle">{{ cursos|length }} curso{{ 's' if cursos|length != 1 else '' }} seleccionado{{ 's' if cursos|length != 1 else '' }} para ti</p>
+                    </div>
+                </div>
+
+                {% if cursos %}
+                <div class="recommendations">
+                    {% for curso, score in cursos %}
+                    <div class="course-card" style="--delay: {{ loop.index0 * 0.1 }}s">
+                        <div class="course-header">
+                            <div>
+                                <h3 class="course-title">{{ curso }}</h3>
+                            </div>
+                        </div>
+                        
+                        <p class="course-description">{{ curso.descripcion }}</p>
+                        
+                        <div class="course-actions">
+                            <a href="#" class="course-link">
+                                <span>Ver Curso</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                            <button class="course-info-btn" title="Más información">
+                                <i class="fas fa-info"></i>
+                            </button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3>No se encontraron recomendaciones</h3>
+                    <p>No pudimos encontrar cursos que coincidan con tu perfil. Intenta actualizar tu información o contacta con soporte.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
 </body>
 </html>

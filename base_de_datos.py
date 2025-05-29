@@ -82,21 +82,25 @@ def calcular_similitud(estudiante_1, estudiante_2):
     else:
         similitud_de_personalidad = 0
 
-    return 0.55 * similitud_de_intereses + 0.35 * similitud_de_promedio + 0.10 * similitud_de_personalidad
+    return 0.50 * similitud_de_intereses + 0.35 * similitud_de_promedio + 0.15 * similitud_de_personalidad
 
 def crear_relaciones(conn, estudiantes, k=3):
-    # Filtrar estudiantes para que solo se tenga relación con estudiantes que han tomado un curso previamente
-    estudiantes_filtrados = estudiantes_con_ratings(conn, estudiantes)  
+    for a in estudiantes:
+        # 1. Borrar relaciones previas
+        query_delete = """
+        MATCH (a:Estudiante {nombre: $nombre})-[r:SIMILAR_A]->()
+        DELETE r
+        """
+        conn.correr_query(query_delete, {'nombre': a['nombre']})
 
-    # Obtener todos los valores de similitud entre cada estudiante y todos los demás
-    for i, a in enumerate(estudiantes_filtrados):
+    # 2. Crear nuevas relaciones como antes
+    for i, a in enumerate(estudiantes):
         similitudes = []
-        for j, b in enumerate(estudiantes_filtrados):
+        for j, b in enumerate(estudiantes):
             if a["nombre"] != b["nombre"]:
-                sim = calcular_similitud(a,b)
+                sim = calcular_similitud(a, b)
                 similitudes.append((b["nombre"], sim))
 
-        # Obtener los k vecinos más similares
         vecinos_mas_similares = sorted(similitudes, key=lambda x: x[1], reverse=True)[:k]
 
         for nombre_b, sim in vecinos_mas_similares:
@@ -105,7 +109,11 @@ def crear_relaciones(conn, estudiantes, k=3):
             MERGE (a)-[r:SIMILAR_A]->(b)
             SET r.similitud = $similitud
             """
-            conn.correr_query(query, {'nombre_a': a['nombre'], 'nombre_b': nombre_b, 'similitud': sim})
+            conn.correr_query(query, {
+                'nombre_a': a['nombre'],
+                'nombre_b': nombre_b,
+                'similitud': sim
+            })
 
 def estudiantes_con_ratings(conn, estudiantes):
     estudiantes_validos = []
@@ -121,3 +129,25 @@ def estudiantes_con_ratings(conn, estudiantes):
             estudiantes_validos.append(est)
 
     return estudiantes_validos
+
+def obtener_estudiantes(conn):
+    query = """
+    MATCH (e:Estudiante)
+    RETURN e.nombre AS nombre, e.edad AS edad, e.año_academico AS año, 
+           e.facultad AS facultad, e.carrera AS carrera, e.intereses AS intereses,
+           e.promedio AS promedio, e.personalidad AS personalidad
+    """
+    resultado = conn.correr_query(query)
+    return [
+        {
+            "nombre": r["nombre"],
+            "edad": r["edad"],
+            "año": r["año"],
+            "facultad": r["facultad"],
+            "carrera": r["carrera"],
+            "intereses": r["intereses"],
+            "promedio": r["promedio"],
+            "personalidad": r["personalidad"]
+        }
+        for r in resultado if r["nombre"] is not None
+    ]

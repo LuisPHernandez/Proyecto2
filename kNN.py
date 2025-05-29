@@ -1,4 +1,4 @@
-def recomendar_cursos_knn(conn, nombre_estudiante, k=3, nota_minima=7):
+def recomendar_cursos_knn(conn, nombre_estudiante, k=3, nota_minima=6):
     # Query que devuelve los k vecinos más similares del grafo
     query_vecinos = """
     MATCH (e:Estudiante {nombre: $nombre})-[s:SIMILAR_A]->(vecino)
@@ -17,7 +17,7 @@ def recomendar_cursos_knn(conn, nombre_estudiante, k=3, nota_minima=7):
 
         query_cursos = """
         MATCH (v:Estudiante {nombre: $vecino})-[r:RATED]->(c:Curso)
-        WHERE r.ratinf >= $nota_minima
+        WHERE r.rating >= $nota_minima
         AND NOT EXISTS {
             MATCH (:Estudiante {nombre: $nombre})-[r2:RATED]->(c)
         }

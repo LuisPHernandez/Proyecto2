@@ -121,7 +121,9 @@ def test():
 @login_requerido
 def resultado():
     datos = request.form.to_dict(flat=True)
-    personalidad = procesar_personalidad(datos)
+    session['personalidad'] = procesar_personalidad(datos)
+    print(session.get('personalidad'))
+    personalidad = session.get('personalidad')
     nombre = session.get('nombre')
     edad = session.get('edad')
     año = session.get('año')
@@ -131,13 +133,15 @@ def resultado():
     promedio = session.get('promedio')
 
     user_id = session['user_id']
-    usuario = model.Usuario.query.get(user_id)
+    usuario = db.session.get(model.Usuario, user_id)
     usuario.perfil_completo = True
     db.session.commit()
 
     # Guardar en Neo4j
     conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
     crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses_seleccionados, promedio, personalidad)
+    estudiantes = obtener_estudiantes(conn)
+    crear_relaciones(conn, estudiantes, k=3)
     conn.cerrar()
 
     # Redirigir a pantalla de estudiante
@@ -146,13 +150,23 @@ def resultado():
 @app.route('/recomendaciones')
 @login_requerido
 def recomendaciones():
-    user_id = session['user_id']
+    nombre = session['nombre']
 
     conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
 
-    # Obtener cursos recomendados usando el algoritmo híbrido
-    cursos = recomendar_cursos_hibrido(conn, user_id)
+    datos_usuario = {
+    "edad": session.get('edad'),
+    "facultad": session.get('facultad'),
+    "carrera": session.get('carrera'),
+    "año_academico": session.get('año'),
+    "promedio": session.get('promedio'),
+    "intereses": session.get('intereses_seleccionados'),
+    "personalidad": session.get('personalidad')
+    }
 
+    # Obtener cursos recomendados usando el algoritmo híbrido
+    cursos = recomendar_cursos_hibrido(conn, nombre)
+    return render_template('recomendaciones.html', cursos=cursos, datos_usuario=datos_usuario)
 
 if (__name__ == "__main__"):
     app.run(debug=True)

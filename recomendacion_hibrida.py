@@ -4,11 +4,11 @@ from RWR import recomendar_cursos_rwr
 def curso_ya_tomado(conn, nombre_estudiante, nombre_curso):
     # Query devuelve los cursos que ya fueron tomados, porque ya fueron rateados, por el estudiante objetivo
     query = """
-    MATCH (:Estudiante {nombre: $nombre_estudiante})-[r.RATED]->(:Curso {nombre: $nombre_curso})
+    MATCH (:Estudiante {nombre: $nombre_estudiante})-[r:RATED]->(:Curso {nombre: $nombre_curso})
     RETURN COUNT(r) > 0 AS tomado
     """
-    resultado = conn.correr_query(query, {'nombre_estudiante': nombre_estudiante, 'nombre_curso': nombre_curso})
-    return resultado.single()['tomado']
+    resultado = conn.correr_query(query, {'nombre_estudiante': nombre_estudiante, 'nombre_curso': nombre_curso}, mode="single")
+    return resultado['tomado']
 
 def recomendar_cursos_hibrido(conn, nombre_estudiante, k=3, n=5, nota_minima=7):
     peso_knn = 1.0
