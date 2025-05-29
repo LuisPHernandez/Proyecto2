@@ -109,7 +109,7 @@ def formulario():
         conn.cerrar()
 
         flash("Perfil guardado exitosamente", "success")
-        return redirect(url_for('estudiante'))
+        return redirect(url_for('test'))
 
     return render_template("formulario.html", facultades=facultades, intereses= intereses)
 
