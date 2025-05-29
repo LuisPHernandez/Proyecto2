@@ -10,12 +10,16 @@ class UsuarioTipo(db.Model):
 class Usuario(db.Model):
     __tablename__ = 'Usuario'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    nombre = db.Column(db.String(100), nullable=False)
+    apellido = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(32), nullable=False)
     tipo = db.Column(db.Integer, db.ForeignKey(UsuarioTipo.id))
     perfil_completo = db.Column(db.Boolean, default=False)
 
-    def __init__(self, email, password, tipo):
+    def __init__(self, nombre, apellido, email, password, tipo):
+        self.nombre = nombre
+        self.apellido = apellido
         self.email = email
         self.password = password
         self.tipo = tipo
@@ -39,7 +43,8 @@ def _inicializar_tipos_usuario(*args, **kwargs):
 
 def _inicializar_usuarios(*args, **kwargs):
     # Crear usuarios default
-    admin = Usuario('admin@uvg.edu.gt', 'admin', 1)
+    tipo_admin = UsuarioTipo.query.filter_by(tipo='Administrador').first()
+    admin = Usuario('Admin', 'Admin', 'admin@uvg.edu.gt', 'admin', tipo_admin.id)
     db.session.add(admin)
     db.session.commit()
 

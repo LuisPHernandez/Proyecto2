@@ -318,8 +318,7 @@ function handleFormSubmission(e) {
         
         setTimeout(() => {
             // Redirect to personality test
-            window.location.href = '/test';
-            console.log('Redirecting to personality test...');
+            document.getElementById('academicForm').submit();
         }, 2000);
     }, 2000);
 }

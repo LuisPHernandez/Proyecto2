@@ -28,6 +28,8 @@ def login():
         usuario = model.Usuario.query.filter_by(email=email, password=password).first()
 
         if usuario:
+            session['user_id'] = usuario.id
+            session['nombre'] = f"{usuario.nombre} {usuario.apellido}"
 
             if usuario.tipo == 1:
                 return redirect(url_for('admin'))
@@ -64,7 +66,7 @@ def registro():
             flash('Error: tipo de usuario "Estudiante" no está definido.', 'error')
             return render_template('registro.html')
 
-        nuevo_usuario = model.Usuario(email=email, password=password, tipo=tipo_estudiante.id)
+        nuevo_usuario = model.Usuario(nombre=nombre, apellido=apellido, email=email, password=password, tipo=tipo_estudiante.id)
         db.session.add(nuevo_usuario)
         db.session.commit()
 
@@ -95,25 +97,20 @@ def estudiante():
 @login_requerido
 def formulario():
     if request.method == 'POST':
-        nombre = request.form.get('nombre')
-        edad = int(request.form.get('edad'))
-        año = request.form.get('año')
-        facultad = request.form.get('facultad')
-        carrera = request.form.get('carrera')
-        intereses_seleccionados = request.form.getlist('intereses')
-        promedio = float(request.form.get('promedio'))
-
-        # Guardar en Neo4j
-        conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
-        crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses_seleccionados, promedio)
-        conn.cerrar()
+        print("Llegó un POST al formulario")
+        session['edad'] = int(request.form.get('edad'))
+        session['año'] = request.form.get('año')
+        session['facultad'] = request.form.get('facultad')
+        session['carrera'] = request.form.get('carrera')
+        session['intereses_seleccionados'] = request.form.getlist('intereses')
+        session['promedio'] = float(request.form.get('promedio'))
 
         flash("Perfil guardado exitosamente", "success")
         return redirect(url_for('test'))
 
     return render_template("formulario.html", facultades=facultades, intereses= intereses)
 
-@app.route('/test', methods = ['POST'])
+@app.route('/test', methods = ['GET', 'POST'])
 def test():
     datos = request.form.to_dict(flat=True)
     return  render_template("test.html", preguntas = preguntas_personalidad,datos_previos = datos)
@@ -121,8 +118,22 @@ def test():
 @app.route('/resultado', methods=['POST'])
 def resultado():
     datos = request.form.to_dict(flat=True)
-    resultado_final = procesar_personalidad(datos)
-    return render_template("resultado.html", resultado=resultado_final)
+    personalidad = procesar_personalidad(datos)
+    nombre = session.get('nombre')
+    edad = session.get('edad')
+    año = session.get('año')
+    facultad = session.get('facultad')
+    carrera = session.get('carrera')
+    intereses_seleccionados = session.get('intereses_seleccionados')
+    promedio = session.get('promedio')
+
+    # Guardar en Neo4j
+    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+    crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses_seleccionados, promedio, personalidad)
+    conn.cerrar()
+
+    # Redirigir a pantalla de estudiante
+    return redirect(url_for('estudiante'))
 
 if (__name__ == "__main__"):
     app.run(debug=True)

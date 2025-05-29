@@ -14,11 +14,11 @@ class Neo4jConnection:
         with self.driver.session() as session:
             return session.run(query, parametros)
 
-def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, promedio):
+def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, promedio, personalidad):
     query = """
     MERGE (e:Estudiante {nombre: $nombre})
     SET e.edad = $edad, e.año_academico = $año, e.facultad = $facultad,
-        e.carrera = $carrera, e.intereses = $intereses, e.promedio = $promedio
+        e.carrera = $carrera, e.intereses = $intereses, e.promedio = $promedio, e.personalidad = $personalidad
     """
     conn.correr_query(query, {
         'nombre': nombre,
@@ -27,7 +27,8 @@ def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, pro
         'facultad': facultad,
         'carrera': carrera,
         'intereses': intereses,
-        'promedio': promedio
+        'promedio': promedio,
+        'personalidad': personalidad
     })
 
     return {
@@ -37,7 +38,8 @@ def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, pro
         "facultad": facultad,
         "carrera": carrera,
         "intereses": intereses,
-        "promedio": promedio
+        "promedio": promedio,
+        "personalidad": personalidad
     }
 
 def crear_curso(conn, nombre, descripcion):

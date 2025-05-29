@@ -16,19 +16,19 @@ intereses = [
 preguntas_personalidad = [
     {
         "pregunta": "¿Prefieres resolver problemas usando lógica y datos?",
-        "opciones": ["Sí", "No"]
+        "respuestas": {"Sí": "Analítico", "No": "Sociable"}
     },
     {
         "pregunta": "¿Te gusta inventar nuevas ideas o soluciones?",
-        "opciones": ["Sí", "No"]
+        "respuestas": {"Sí": "Creativo", "No": "Práctico"}
     },
     {
         "pregunta": "¿Prefieres seguir un procedimiento probado antes que improvisar?",
-        "opciones": ["Sí", "No"]
+        "respuestas": {"Sí": "Práctico", "No": "Creativo"}
     },
     {
         "pregunta": "¿Disfrutas trabajar en equipo y hablar con muchas personas?",
-        "opciones": ["Sí", "No"]
+        "respuestas": {"Sí": "Sociable", "No": "Analítico"}
     }
 ]
 
