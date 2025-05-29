@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Recomendaciones de Cursos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='formulario_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Cursos Recomendados para Ti</h1>
+            <p>Basado en tu perfil académico y test de personalidad</p>
+        </header>
+
+        <div class="recommendations">
+            {% for curso in cursos %}
+            <div class="course-card">
+                <h2>{{ curso.nombre }}</h2>
+                <p>{{ curso.descripcion }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .recommendations {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .course-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .course-card h2 {
+            margin: 0 0 10px;
+        }
+        .course-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .logout-button {
+            display: inline-block;
+            margin-top: 40px;
+            color: red;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</body>
+</html>

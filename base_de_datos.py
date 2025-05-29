@@ -12,7 +12,7 @@ class Neo4jConnection:
 
     def correr_query(self, query, parametros=None):
         with self.driver.session() as session:
-            return session.run(query, parametros)
+            return list(session.run(query, parametros))
 
 def crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses, promedio, personalidad):
     query = """
@@ -108,3 +108,20 @@ def estudiantes_con_ratings(conn, estudiantes):
 
     # Devolver solo estudiantes que hayan rateado un curso en el pasado
     return estudiantes_validos
+
+def obtener_curso_por_id(conn, curso_id):
+    query = """
+            MATCH (c:Curso {id: $id})
+            RETURN c.nombre AS nombre,
+               c.descripcion AS descripcion,
+            """
+    result = conn.correr_query(query, id=curso_id)
+    record = result.single()
+    
+    if record:
+        return {
+            'nombre': record['nombre'],
+            'descripcion': record['descripcion'],
+        }
+    else:
+        return None

@@ -4,6 +4,7 @@ from test import procesar_personalidad
 from forms import *
 from extensions import db
 from base_de_datos import *
+from recomendacion_hibrida import recomendar_cursos_hibrido
 
 app = Flask(__name__, instance_relative_config=True)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///basedatos.db'
@@ -111,11 +112,13 @@ def formulario():
     return render_template("formulario.html", facultades=facultades, intereses= intereses)
 
 @app.route('/test', methods = ['GET', 'POST'])
+@login_requerido
 def test():
     datos = request.form.to_dict(flat=True)
     return  render_template("test.html", preguntas = preguntas_personalidad,datos_previos = datos)
 
 @app.route('/resultado', methods=['POST'])
+@login_requerido
 def resultado():
     datos = request.form.to_dict(flat=True)
     personalidad = procesar_personalidad(datos)
@@ -127,6 +130,11 @@ def resultado():
     intereses_seleccionados = session.get('intereses_seleccionados')
     promedio = session.get('promedio')
 
+    user_id = session['user_id']
+    usuario = model.Usuario.query.get(user_id)
+    usuario.perfil_completo = True
+    db.session.commit()
+
     # Guardar en Neo4j
     conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
     crear_estudiante(conn, nombre, edad, año, facultad, carrera, intereses_seleccionados, promedio, personalidad)
@@ -134,6 +142,17 @@ def resultado():
 
     # Redirigir a pantalla de estudiante
     return redirect(url_for('estudiante'))
+
+@app.route('/recomendaciones')
+@login_requerido
+def recomendaciones():
+    user_id = session['user_id']
+
+    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+
+    # Obtener cursos recomendados usando el algoritmo híbrido
+    cursos = recomendar_cursos_hibrido(conn, user_id)
+
 
 if (__name__ == "__main__"):
     app.run(debug=True)
