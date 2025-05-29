@@ -58,6 +58,10 @@ function setupEventListeners() {
     promedioInput.addEventListener('input', updateGradeIndicator);
     promedioInput.addEventListener('blur', validateGrade);
 
+    // Age input handler
+    const edadInput = document.getElementById('edad');
+    edadInput.addEventListener('blur', validateAge);
+
     // Interest checkboxes handler
     const interestCheckboxes = document.querySelectorAll('.interest-checkbox:checked');
     interestCheckboxes.forEach(checkbox => {
@@ -215,6 +219,22 @@ function validateGrade() {
     }
 }
 
+function validateAge() {
+    const edadInput = document.getElementById('edad');
+    const edad = parseInt(edadInput.value);
+    const formGroup = edadInput.closest('.form-group');
+    
+    if (isNaN(edad) || edad < 16 || edad > 65) {
+        formGroup.classList.add('error');
+        formGroup.classList.remove('success');
+        showFieldError(edadInput, 'La edad debe estar entre 16 y 65 años');
+    } else {
+        formGroup.classList.remove('error');
+        formGroup.classList.add('success');
+        clearFieldError(edadInput);
+    }
+}
+
 function updateSelectedInterests() {
     const checkboxes = document.querySelectorAll('.interest-checkbox:checked');
     const selectedContainer = document.getElementById('interestsSelected');
@@ -234,13 +254,19 @@ function updateSelectedInterests() {
 }
 
 function validateForm() {
+    const edad = document.getElementById('edad').value;
+    const anioAcademico = document.getElementById('anio_academico').value;
     const facultad = document.getElementById('facultad').value;
     const carrera = document.getElementById('carrera').value;
     const promedio = document.getElementById('promedio').value;
     const interestCheckboxes = document.querySelectorAll('input.interest-checkbox:checked');
     const continueButton = document.getElementById('continueButton');
 
-    const isValid = facultad && carrera &&
+    const isValid = edad !== '' &&
+                    parseInt(edad) >= 16 &&
+                    parseInt(edad) <= 65 &&
+                    anioAcademico !== '' &&
+                    facultad && carrera &&
                     promedio !== '' &&
                     !isNaN(parseFloat(promedio)) &&
                     parseFloat(promedio) >= 0 &&
@@ -250,7 +276,6 @@ function validateForm() {
     continueButton.disabled = !isValid;
     return isValid;
 }
-
 
 function handleFormSubmission(e) {
     e.preventDefault();
@@ -264,9 +289,17 @@ function handleFormSubmission(e) {
         return;
     }
     
-    // Collect selected interests
-    const selectedInterests = Array.from(document.querySelectorAll('.interest-checkbox:checked')).map(cb => cb.value);
-    console.log('Intereses seleccionados:', selectedInterests);
+    // Collect form data
+    const formData = {
+        edad: document.getElementById('edad').value,
+        anio_academico: document.getElementById('anio_academico').value,
+        facultad: document.getElementById('facultad').value,
+        carrera: document.getElementById('carrera').value,
+        promedio: document.getElementById('promedio').value,
+        intereses: Array.from(document.querySelectorAll('.interest-checkbox:checked')).map(cb => cb.value)
+    };
+    
+    console.log('Datos del formulario:', formData);
     
     // Show loading overlay
     const loadingOverlay = document.getElementById('loadingOverlay');
