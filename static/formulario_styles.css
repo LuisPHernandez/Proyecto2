@@ -300,6 +300,13 @@ body {
     position: relative;
 }
 
+/* Form Row for side-by-side fields */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
 .form-label {
     display: flex;
     align-items: center;
@@ -818,6 +825,12 @@ body {
     
     .interests-container {
         grid-template-columns: 1fr;
+    }
+    
+    /* Stack form row on mobile */
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
     }
 }
 
