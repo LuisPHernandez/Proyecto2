@@ -66,6 +66,54 @@
                     </div>
 
                     <form class="academic-form" method="POST" action="{{ url_for('test') }}" id="academicForm">
+                        <!-- Personal Information Row -->
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="edad" class="form-label">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    Edad
+                                </label>
+                                <div class="input-wrapper">
+                                    <input 
+                                        type="number" 
+                                        id="edad" 
+                                        name="edad" 
+                                        class="form-input" 
+                                        min="16" 
+                                        max="65" 
+                                        placeholder="Ej: 20"
+                                        required
+                                    >
+                                    <span class="input-suffix">años</span>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    Tu edad actual
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="anio_academico" class="form-label">
+                                    <i class="fas fa-layer-group"></i>
+                                    Año Académico
+                                </label>
+                                <div class="select-wrapper">
+                                    <select id="anio_academico" name="anio_academico" class="form-select" required>
+                                        <option value="" disabled selected>Selecciona tu año</option>
+                                        <option value="2">2do año</option>
+                                        <option value="3">3er año</option>
+                                        <option value="4">4to año</option>
+                                        <option value="5">5to año</option>
+                                    </select>
+                                    <i class="fas fa-chevron-down select-icon"></i>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-info-circle"></i>
+                                    En qué año de tu carrera te encuentras
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-group">
                             <label for="facultad" class="form-label">
                                 <i class="fas fa-university"></i>
