@@ -37,15 +37,19 @@ personalidades = ["Analítico", "Creativo", "Práctico", "Sociable"]
 
 nombres_base = ["Ana", "Luis", "Carlos", "María", "Sofía", "José", "Elena", "Mario", "Laura", "Pablo",
                 "Isabel", "Daniel", "Andrea", "Javier", "Camila", "David", "Paola", "Héctor", "Renata", "Tomás",
-                "Pedro", "Sebastian", "Derek", "Adair", "Daniela", "Diego", "Andrea", "Sandra", "Joel", "Donaldo"]
+                "Pedro", "Sebastian", "Derek", "Adair", "Daniela", "Diego", "Andrea", "Sandra", "Joel", "Donaldo",
+                "Adair", "Harry", "Marcelo", "Fátima", "Lionel", "Cristiano", "Christian", "Emilio", "Alessandra",
+                "Esteban", "Matias", "Fabián", "Ronald", "Arturo", "Danilo", "Santiago", "Sabrina", "Olivia", "Lanna"]
 apellidos_base = ["Pérez", "García", "Rodríguez", "López", "Martínez", "Sánchez", "Díaz", "Ramírez", "Morales", "Castillo",
                 "Hernández", "Figueroa", "Samayoa", "Machón", "Petersen", "Quan", "España", "Toledo", "Nerio", "Leal", 
-                "Monroy", "Maldonado", "Cuevas", "Coronado", "Schoenbeck", "Aparicio", "Donado", "Flores"]
+                "Monroy", "Maldonado", "Cuevas", "Coronado", "Schoenbeck", "Aparicio", "Donado", "Flores", "Godoy",
+                "Schnoor", "Alvarez", "Fuentes", "Barillas", "Barrios", "Arzú", "Aguirre", "Aguiluz", "Siguenza",
+                "Pineda", "Guzmán", "Castillo", "Castrillo", "Kong", "Porras", "Orellana", "Collia", "Arriola", "Messi"]
 
 estudiantes = []
 cursos = []
 
-for i in range(25):
+for i in range(100):
     nombre = f"{random.choice(nombres_base)} {random.choice(apellidos_base)}"
     edad = random.randint(18, 24)
     año = random.randint(1, 5)

@@ -39,6 +39,10 @@
                 </div>
             </a>
             <div class="header-actions">
+                <a href="{{ url_for('estudiante') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Regresar</span>
+                </a>
                 <div class="user-info">
                     <i class="fas fa-check-circle"></i>
                     <span>Perfil Completado</span>
@@ -131,6 +135,7 @@
                             <div>
                                 <h3 class="course-title">{{ curso }}</h3>
                             </div>
+                            <div class="course-match">{{ (score*10)|round(2) }}% Match</div>
                         </div>
                         
                         <p class="course-description">{{ curso.descripcion }}</p>
