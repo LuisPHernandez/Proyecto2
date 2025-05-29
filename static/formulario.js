@@ -278,7 +278,6 @@ function validateForm() {
 }
 
 function handleFormSubmission(e) {
-    e.preventDefault();
     
     if (!validateForm()) {
         if (document.querySelectorAll('.interest-checkbox:checked').length === 0) {
@@ -319,7 +318,7 @@ function handleFormSubmission(e) {
         
         setTimeout(() => {
             // Redirect to personality test
-            // window.location.href = '/test';
+            window.location.href = '/test';
             console.log('Redirecting to personality test...');
         }, 2000);
     }, 2000);

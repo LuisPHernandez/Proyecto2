@@ -91,7 +91,7 @@ def admin():
 def estudiante():
     return render_template('estudiante.html')
 
-@app.route('/formulario')
+@app.route('/formulario', methods=['GET', 'POST'])
 @login_requerido
 def formulario():
     if request.method == 'POST':
