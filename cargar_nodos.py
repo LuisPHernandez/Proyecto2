@@ -16,8 +16,11 @@ intereses = ["Tecnología", "Salud", "Educación", "Investigación", "Arte", "Ci
 personalidades = ["Analítico", "Creativo", "Práctico", "Sociable"]
 
 nombres_base = ["Ana", "Luis", "Carlos", "María", "Sofía", "José", "Elena", "Mario", "Laura", "Pablo",
-                "Isabel", "Daniel", "Andrea", "Javier", "Camila", "David", "Paola", "Héctor", "Renata", "Tomás"]
-apellidos_base = ["Pérez", "García", "Rodríguez", "López", "Martínez", "Sánchez", "Díaz", "Ramírez", "Morales", "Castillo"]
+                "Isabel", "Daniel", "Andrea", "Javier", "Camila", "David", "Paola", "Héctor", "Renata", "Tomás",
+                "Pedro", "Sebastian", "Derek", "Adair", "Daniela", "Diego", "Andrea", "Sandra", "Joel", "Donaldo"]
+apellidos_base = ["Pérez", "García", "Rodríguez", "López", "Martínez", "Sánchez", "Díaz", "Ramírez", "Morales", "Castillo",
+                "Hernández", "Figueroa", "Samayoa", "Machón", "Petersen", "Quan", "España", "Toledo", "Nerio", "Leal", 
+                "Monroy", "Maldonado", "Cuevas", "Coronado", "Schoenbeck", "Aparicio", "Donado", "Flores"]
 
 estudiantes = []
 
