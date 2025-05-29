@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, session
 from functools import wraps
-from test import procesar_personalidad
+from Test import procesar_personalidad
 from forms import *
 from extensions import db
 from base_de_datos import *
