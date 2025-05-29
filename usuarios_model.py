@@ -10,17 +10,18 @@ class UsuarioTipo(db.Model):
 class Usuario(db.Model):
     __tablename__ = 'Usuario'
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    username = db.Column(db.String(32), unique=True, nullable=False)
+    email = db.Column(db.String(32), unique=True, nullable=False)
     password = db.Column(db.String(32), nullable=False)
     tipo = db.Column(db.Integer, db.ForeignKey(UsuarioTipo.id))
+    perfil_completo = db.Column(db.Boolean, default=False)
 
-    def __init__(self, username, password, tipo):
-        self.username = username
+    def __init__(self, email, password, tipo):
+        self.email = email
         self.password = password
         self.tipo = tipo
 
     def update_from_form(self, form):
-        self.username = form.username.data.strip()
+        self.email = form.email.data.strip()
         if form.password.data.strip() != "": 
             self.password = form.password.data.strip()
         self.tipo = form.type.data

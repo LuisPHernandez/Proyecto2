@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Académico - UVG Course Reccomendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='formulario_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span>Configurando tu perfil</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="form-container">
+            <!-- Left Side - Form -->
+            <div class="form-section">
+                <div class="form-card">
+                    <div class="form-header">
+                        <div class="step-indicator">
+                            <div class="step-number">1</div>
+                            <div class="step-info">
+                                <span class="step-title">Paso 1 de 2</span>
+                                <span class="step-subtitle">Información Académica</span>
+                            </div>
+                        </div>
+                        <h1>Configura tu perfil académico</h1>
+                        <p>Ayúdanos a conocerte mejor para ofrecerte las mejores recomendaciones de cursos</p>
+                    </div>
+
+                    <form class="academic-form" method="POST" action="{{ url_for('test') }}" id="academicForm">
+                        <div class="form-group">
+                            <label for="facultad" class="form-label">
+                                <i class="fas fa-university"></i>
+                                Facultad
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="facultad" name="facultad" class="form-select" onchange="actualizarCarreras()" required>
+                                    <option value="" disabled selected>Selecciona tu facultad</option>
+                                    {% for facultad in facultades %}
+                                    <option value="{{ facultad }}">{{ facultad }}</option>
+                                    {% endfor %}
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Selecciona la facultad donde estudias
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="carrera" class="form-label">
+                                <i class="fas fa-graduation-cap"></i>
+                                Carrera
+                            </label>
+                            <div class="select-wrapper">
+                                <select id="carrera" name="carrera" class="form-select" required disabled>
+                                    <option value="" disabled selected>Primero selecciona una facultad</option>
+                                </select>
+                                <i class="fas fa-chevron-down select-icon"></i>
+                            </div>
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Tu programa de estudios actual
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="promedio" class="form-label">
+                                <i class="fas fa-chart-line"></i>
+                                Promedio Académico
+                            </label>
+                            <div class="input-wrapper">
+                                <input 
+                                    type="number" 
+                                    id="promedio" 
+                                    name="promedio" 
+                                    class="form-input" 
+                                    step="1" 
+                                    min="0" 
+                                    max="100" 
+                                    placeholder="Ej: 85"
+                                    required
+                                >
+                                <span class="input-suffix">/ 100</span>
+                            </div>
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Ingresa tu promedio actual (escala de  a 100)
+                            </div>
+                            <div class="grade-indicator">
+                                <div class="grade-bar">
+                                    <div class="grade-fill" id="gradeFill"></div>
+                                </div>
+                                <span class="grade-text" id="gradeText">Ingresa tu promedio</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <i class="fas fa-heart"></i>
+                                Áreas de Interés
+                                <span class="label-hint">(Selecciona todas las que apliquen)</span>
+                            </label>
+                            
+                            <div class="interests-container" id="interestsContainer">
+                                <!-- Interest checkboxes will be populated by JavaScript -->
+                                {% for interes in intereses %}
+                                <label class="interest-option">
+                                    <input type="checkbox" name="intereses[]" value="{{ interes }}" class="interest-checkbox">
+                                    <span class="interest-card">
+                                        <span class="interest-name">{{ interes }}</span>
+                                    </span>
+                                </label>
+                                {% endfor %}
+                            </div>
+                            
+                            <div class="form-hint">
+                                <i class="fas fa-info-circle"></i>
+                                Las áreas que más te apasionan o te gustaría explorar
+                            </div>
+                            <div id="interestsSelected" class="selected-interests">
+                                <span>Ninguna área seleccionada</span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="continue-button" id="continueButton">
+                                <span>Continuar al Test de Personalidad</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <div class="form-footer">
+                            <div class="progress-info">
+                                <i class="fas fa-clock"></i>
+                                <span>Tiempo estimado: 2-3 minutos</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Right Side - Information -->
+            <div class="info-section">
+                <div class="info-content">
+                    <div class="info-header">
+                        <h2>¿Por qué necesitamos esta información?</h2>
+                        <p>Tu perfil académico nos ayuda a personalizar las recomendaciones</p>
+                    </div>
+
+                    <div class="info-benefits">
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-bullseye"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Recomendaciones Precisas</h4>
+                                <p>Cursos alineados con tu nivel académico y facultad</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Análisis Inteligente</h4>
+                                <p>Sistema que hace recomendaciones basadas en tu perfil académico</p>
+                            </div>
+                        </div>
+
+                        <div class="benefit-item">
+                            <div class="benefit-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="benefit-content">
+                                <h4>Datos Seguros</h4>
+                                <p>Tu información académica está protegida y es confidencial</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="next-step-preview">
+                        <div class="preview-header">
+                            <h3>Siguiente paso</h3>
+                            <span class="step-badge">Paso 2</span>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-icon">
+                                <i class="fas fa-psychology"></i>
+                            </div>
+                            <div class="preview-text">
+                                <h4>Test de Personalidad Académica</h4>
+                                <p>Descubriremos tu estilo de aprendizaje y preferencias para optimizar tus recomendaciones</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="security-note">
+                        <i class="fas fa-lock"></i>
+                        <span>Toda tu información está encriptada y protegida según los estándares de UVG</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner">
+            <div class="spinner"></div>
+            <p>Procesando tu información...</p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='formulario.js') }}"></script>
+</body>
+</html>

@@ -1,9 +1,11 @@
 # Datos para formularios
 facultades = {
-    "Ingeniería": ["Biomédica", "Ciencias de la Computación", "Industrial", "Mecánica"],
-    "Ciencias Sociales": ["Antropología", "Arqueología", "Psicología"],
-    "Ciencias y Humanidades": ["Biología", "Bioquímica", "Física"],
-    "Educación": ["Educación Musical", "Educación Primaria", "Educación Inclusiva"]
+    "Ingeniería": ["Biomédica", "Biotecnología Industrial", "Ciencia de la Administración", "Ciencias de Alimentos", "Ciencias de Alimentos Industrial", "Civil", "Ciencias de la Computación", "Electrónica", "Industrial", "Mecánica", "Mecánica Industrial", "Mecatrónica", "Química", "Química Industrial"],
+    "Ciencias Sociales": ["Antropología", "Arqueología", "Psicología", "Relaciones Internacionales"],
+    "Ciencias y Humanidades": ["Biología", "Bioquímica", "Física", "Matemática Aplicada", "Nutrición", "Química", "Química Farmacéutica"],
+    "Educación": ["Educación Musical", "Educación Primaria", "Educación Inclusiva"],
+    "Bridge Business School": ["Administración de Empresas", "International Marketing and Business Analytics", "Comunicación Estratégica"],
+    "Escuela de Arquitectura": ["Arquitectura"]
 }
 
 intereses = [

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, url_for, request, redirect, flash, session
-import flask_sqlalchemy
+from functools import wraps
 from test import procesar_personalidad
 from forms import *
 from extensions import db
@@ -24,13 +24,16 @@ def login():
     if request.method == 'POST':
         email = request.form['email']
         password = request.form['password']
-        usuario = model.Usuario.query.filter_by(username=email, password=password).first()
+        usuario = model.Usuario.query.filter_by(email=email, password=password).first()
 
-        if usuario != None:
+        if usuario:
 
             if usuario.tipo == 1:
                 return redirect(url_for('admin'))
             elif usuario.tipo == 2:
+                session['user_id'] = usuario.id
+                if not usuario.perfil_completo:
+                    return redirect(url_for('formulario'))
                 return redirect(url_for('estudiante'))
         else:
             flash('Usuario o password inválido', 'error')
@@ -49,7 +52,7 @@ def registro():
             flash('Las contraseñas no coinciden.', 'error')
             return render_template('registro.html')
 
-        if model.Usuario.query.filter_by(username=email).first():
+        if model.Usuario.query.filter_by(email=email).first():
             flash('Este correo ya está registrado.', 'error')
             return render_template('registro.html')
 
@@ -60,7 +63,7 @@ def registro():
             flash('Error: tipo de usuario "Estudiante" no está definido.', 'error')
             return render_template('registro.html')
 
-        nuevo_usuario = model.Usuario(username=email, password=password, tipo=tipo_estudiante.id)
+        nuevo_usuario = model.Usuario(email=email, password=password, tipo=tipo_estudiante.id)
         db.session.add(nuevo_usuario)
         db.session.commit()
 
@@ -69,17 +72,28 @@ def registro():
 
     return render_template('registro.html')
 
+def login_requerido(f):
+    @wraps(f)
+    def decorada(*args, **kwargs):
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorada
+
 @app.route('/admin')
+@login_requerido
 def admin():
     return render_template('admin.html')
 
 @app.route('/estudiante')
+@login_requerido
 def estudiante():
     return render_template('estudiante.html')
 
 @app.route('/formulario')
+@login_requerido
 def formulario():
-    return render_template("formulario_inicial.html", facultades=facultades, intereses= intereses)
+    return render_template("formulario.html", facultades=facultades, intereses= intereses)
 
 @app.route('/test', methods = ['POST'])
 def test():
