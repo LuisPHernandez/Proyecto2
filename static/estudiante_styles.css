@@ -742,3 +742,58 @@ body {
         padding: 1.5rem;
     }
 }
+
+
+.back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: var(--neutral-100);
+    color: var(--neutral-700);
+    text-decoration: none;
+    border-radius: var(--radius-lg);
+    font-weight: 600;
+    font-size: 0.875rem;
+    transition: all 0.3s ease;
+    border: 1px solid var(--neutral-200);
+}
+
+.back-button:hover {
+    background: var(--primary-green);
+    color: white;
+    border-color: var(--primary-green);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.back-button i {
+    font-size: 0.875rem;
+}
+
+/* Ajustes para el header-actions */
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Responsive para el botón regresar */
+@media (max-width: 768px) {
+    .back-button span {
+        display: none;
+    }
+    
+    .back-button {
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        justify-content: center;
+    }
+}
+
+/* Focus state para accesibilidad */
+.back-button:focus {
+    outline: 2px solid var(--primary-green);
+    outline-offset: 2px;
+}

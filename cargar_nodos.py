@@ -105,7 +105,7 @@ def asignar_ratings_a_estudiantes(conn, estudiantes, cursos):
         cursos_elegidos = random.sample(cursos, k=num_cursos)
 
         for curso in cursos_elegidos:
-            rating = round(random.uniform(5, 10), 1)  # Rating con decimales
+            rating = round(random.uniform(5.5, 10), 1)
             agregar_rating(conn, estudiante["nombre"], curso["nombre"], rating)
 
 conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))

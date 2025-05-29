@@ -77,12 +77,24 @@ def calcular_similitud(estudiante_1, estudiante_2):
 
     diferencia_de_promedio = abs(estudiante_1["promedio"] - estudiante_2["promedio"])
     similitud_de_promedio = 1 - (diferencia_de_promedio / 100)
+
+    if (estudiante_1["facultad"] == estudiante_2["facultad"]):
+        similitud_de_facultad = 1
+    else:
+        similitud_de_facultad = 0
+
+    if (estudiante_1["carrera"] == estudiante_2["carrera"]):
+        similitud_de_carrera = 1
+    else:
+        similitud_de_carrera = 0
+
+
     if (estudiante_1["personalidad"] == estudiante_2["personalidad"]):
         similitud_de_personalidad = 1
     else:
         similitud_de_personalidad = 0
 
-    return 0.50 * similitud_de_intereses + 0.35 * similitud_de_promedio + 0.15 * similitud_de_personalidad
+    return 0.45 * similitud_de_intereses + 0.25 * similitud_de_promedio + 0.15 * similitud_de_personalidad + 0.05 * similitud_de_facultad + 0.10 * similitud_de_carrera 
 
 def crear_relaciones(conn, estudiantes, k=3):
     for a in estudiantes:
@@ -150,4 +162,41 @@ def obtener_estudiantes(conn):
             "personalidad": r["personalidad"]
         }
         for r in resultado if r["nombre"] is not None
+    ]
+
+def obtener_estudiante_por_nombre(conn, nombre):
+    query = """
+    MATCH (e:Estudiante {nombre: $nombre})
+    RETURN e.nombre AS nombre, e.edad AS edad, e.año_academico AS año,
+           e.facultad AS facultad, e.carrera AS carrera, e.intereses AS intereses,
+           e.promedio AS promedio, e.personalidad AS personalidad
+    """
+    record = conn.correr_query(query, {'nombre': nombre}, mode="single")
+    if record:
+        return {
+            "nombre": record["nombre"],
+            "edad": record["edad"],
+            "año": record["año"],
+            "facultad": record["facultad"],
+            "carrera": record["carrera"],
+            "intereses": record["intereses"],
+            "promedio": record["promedio"],
+            "personalidad": record["personalidad"]
+        }
+    return None
+
+def obtener_cursos_mejor_valorados(conn, limite=10):
+    query = """
+    MATCH (:Estudiante)-[r:RATED]->(c:Curso)
+    RETURN c.nombre AS nombre, AVG(r.rating) AS promedio_rating
+    ORDER BY promedio_rating DESC
+    LIMIT $limite
+    """
+    resultados = conn.correr_query(query, {'limite': limite})
+    return [
+        {
+            "nombre": r["nombre"],
+            "promedio_rating": round(r["promedio_rating"], 2)
+        }
+        for r in resultados
     ]

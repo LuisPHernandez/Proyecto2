@@ -32,6 +32,20 @@ def login():
             session['user_id'] = usuario.id
             session['nombre'] = f"{usuario.nombre} {usuario.apellido}"
 
+            # Extraer datos del estudiante desde Neo4j
+            conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+            datos_estudiante = obtener_estudiante_por_nombre(conn, session['nombre'])
+            conn.cerrar()
+
+            if datos_estudiante:
+                session['edad'] = datos_estudiante['edad']
+                session['año'] = datos_estudiante['año']
+                session['facultad'] = datos_estudiante['facultad']
+                session['carrera'] = datos_estudiante['carrera']
+                session['intereses_seleccionados'] = datos_estudiante['intereses']
+                session['promedio'] = datos_estudiante['promedio']
+                session['personalidad'] = datos_estudiante['personalidad']
+
             if usuario.tipo == 1:
                 return redirect(url_for('admin'))
             elif usuario.tipo == 2:
@@ -42,6 +56,11 @@ def login():
         else:
             flash('Usuario o password inválido', 'error')
     return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    session.clear()  # Elimina todos los datos de sesión
+    return redirect(url_for('login')) 
 
 @app.route('/registro', methods=['GET', 'POST'])
 def registro():
@@ -167,6 +186,14 @@ def recomendaciones():
     # Obtener cursos recomendados usando el algoritmo híbrido
     cursos = recomendar_cursos_hibrido(conn, nombre)
     return render_template('recomendaciones.html', cursos=cursos, datos_usuario=datos_usuario)
+
+@app.route('/ranking')
+@login_requerido
+def ranking():
+    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+    cursos = obtener_cursos_mejor_valorados(conn, limite=10)
+    conn.cerrar()
+    return render_template('ranking.html', cursos=cursos)
 
 if (__name__ == "__main__"):
     app.run(debug=True)

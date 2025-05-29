@@ -12,7 +12,7 @@ def curso_ya_tomado(conn, nombre_estudiante, nombre_curso):
 
 def recomendar_cursos_hibrido(conn, nombre_estudiante, k=3, n=5, nota_minima=7):
     peso_knn = 1.0
-    peso_rwr = 0.6
+    peso_rwr = 0.8
 
     # 1. Obtener cursos recomendados por kNN, normalizar y aplicar peso
     cursos_knn_raw = recomendar_cursos_knn(conn, nombre_estudiante, k=k)
@@ -55,7 +55,7 @@ def normalizar_escala_de_similitud(puntajes, escala=10.0):
     
     # Encuentra el puntaje máximo y mínimo para normalizar
     valores = [s[1] for s in puntajes]
-    min_s, max_s = min(valores), max(valores)
+    min_s, max_s = 0, max(valores)
     if min_s == max_s:
         return [(s[0], escala / 2.0) for s in puntajes] # Puntaje medio si todos son iguales
     

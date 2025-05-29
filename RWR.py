@@ -4,7 +4,7 @@ def recomendar_cursos_rwr(conn, nombre_estudiante, alpha=0.3, max_iter=100, tol=
     # 1. Obtener nodos y aristas relevantes del subgrafo
     query = """
     MATCH (e:Estudiante)
-    OPTIONAL MATCH (e)-[s:SIMILAR]->(e2:Estudiante)
+    OPTIONAL MATCH (e)-[s:SIMILAR_A]->(e2:Estudiante)
     OPTIONAL MATCH (e)-[r:RATED]->(c:Curso)
     RETURN e.nombre AS estudiante, 
            collect(DISTINCT {vecino: e2.nombre, similitud: s.similitud}) AS vecinos, 

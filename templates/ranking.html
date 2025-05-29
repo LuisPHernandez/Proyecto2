@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking de Cursos - UVG Course Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='ranking_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <a href="{{ url_for('estudiante') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Regresar</span>
+                </a>
+                <div class="user-info">
+                    <i class="fas fa-trophy"></i>
+                    <span>Ranking de Cursos</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-badge">
+                    <i class="fas fa-star"></i>
+                    <span>Top Cursos</span>
+                </div>
+                <h1 class="page-title">Ranking de Cursos Mejor Valorados</h1>
+                <p class="page-subtitle">Descubre los cursos más populares y mejor calificados por estudiantes de UVG</p>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-label">Top</span>
+                        <span class="stat-number">{{ cursos|length }}</span>
+                        <span class="stat-label">Cursos</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ranking Section -->
+            <div class="ranking-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <i class="fas fa-medal"></i>
+                    </div>
+                    <div>
+                        <h2 class="section-title">Top Cursos</h2>
+                        <p class="section-subtitle">Ordenados por calificación promedio de estudiantes</p>
+                    </div>
+                </div>
+
+                {% if cursos %}
+                <div class="ranking-list">
+                    {% for curso in cursos %}
+                    <div class="ranking-item" style="--delay: {{ loop.index0 * 0.1 }}s">
+                        <div class="ranking-position">
+                            {% if loop.index <= 3 %}
+                                <div class="medal medal-{{ loop.index }}">
+                                    {% if loop.index == 1 %}
+                                        <i class="fas fa-trophy"></i>
+                                    {% elif loop.index == 2 %}
+                                        <i class="fas fa-medal"></i>
+                                    {% else %}
+                                        <i class="fas fa-award"></i>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <span class="position-number">{{ loop.index }}</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="course-info">
+                            <h3 class="course-name">{{ curso.nombre }}</h3>
+                            <div class="course-meta">
+                            </div>
+                        </div>
+
+                        <div class="rating-section">
+                            <div class="rating-display">
+                                <span class="rating-number">{{ "%.1f"|format(curso.promedio_rating) }}</span>
+                                <div class="rating-stars">
+                                    {% set full_stars = (curso.promedio_rating)|int %}
+                                    {% set has_half = (curso.promedio_rating - full_stars) >= 0.5 %}
+                                    {% for i in range(5) %}
+                                        {% if i < full_stars %}
+                                            <i class="fas fa-star star-filled"></i>
+                                        {% elif i == full_stars and has_half %}
+                                            <i class="fas fa-star-half-alt star-half"></i>
+                                        {% else %}
+                                            <i class="far fa-star star-empty"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="course-actions">
+                            <button class="action-btn view-btn" title="Ver detalles">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button class="action-btn favorite-btn" title="Agregar a favoritos">
+                                <i class="far fa-heart"></i>
+                            </button>
+                            <a href="#" class="enroll-btn">
+                                <span>Ver Curso</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3>No hay datos de ranking disponibles</h3>
+                    <p>Aún no tenemos suficientes evaluaciones para mostrar un ranking de cursos.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Favorite button functionality
+            const favoriteButtons = document.querySelectorAll('.favorite-btn');
+            favoriteButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const icon = this.querySelector('i');
+                    if (icon.classList.contains('far')) {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        this.style.color = '#ef4444';
+                        this.title = 'Quitar de favoritos';
+                    } else {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        this.style.color = '';
+                        this.title = 'Agregar a favoritos';
+                    }
+                });
+            });
+
+            // View button functionality
+            const viewButtons = document.querySelectorAll('.view-btn');
+            viewButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const courseName = this.closest('.ranking-item').querySelector('.course-name').textContent;
+                    alert(`Mostrando detalles de: ${courseName}`);
+                    // Aquí podrías abrir un modal o redirigir a una página de detalles
+                });
+            });
+        });
+    </script>
+</body>
+</html>

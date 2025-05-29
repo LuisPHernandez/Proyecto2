@@ -25,6 +25,10 @@
                 </div>
             </div>
             <div class="nav-menu">
+                <a href="{{ url_for('logout') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Log out</span>
+                </a>
                 <a href="#" class="nav-item active">Inicio</a>
                 <button class="nav-cta">
                     <i class="fas fa-user"></i>
@@ -126,10 +130,10 @@
                         <h3>Ver ranking de cursos</h3>
                         <p>Explora el catálogo de cursos, del más popular al menos popular</p>
                     </div>
-                    <button class="card-button">
-                        <span>Explorar Catálogo</span>
+                    <a href="{{ url_for('ranking') }}" class="card-button">
+                        <span>Explorar ranking</span>
                         <i class="fas fa-arrow-right"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
