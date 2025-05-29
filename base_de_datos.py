@@ -67,8 +67,12 @@ def calcular_similitud(estudiante_1, estudiante_2):
 
     diferencia_de_promedio = abs(estudiante_1["promedio"] - estudiante_2["promedio"])
     similitud_de_promedio = 1 - (diferencia_de_promedio / 100)
+    if (estudiante_1["personalidad"] == estudiante_2["personalidad"]):
+        similitud_de_personalidad = 1
+    else:
+        similitud_de_personalidad = 0
 
-    return 0.6 * similitud_de_intereses + 0.4 * similitud_de_promedio
+    return 0.55 * similitud_de_intereses + 0.35 * similitud_de_promedio + 0.10 * similitud_de_personalidad
 
 def crear_relaciones(conn, estudiantes, k=3):
     # Filtrar estudiantes para que solo se tenga relación con estudiantes que han tomado un curso previamente

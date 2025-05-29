@@ -1,6 +1,8 @@
 import random
 from base_de_datos import *
 
+random.seed(42)
+
 facultades = {
     "Ingeniería": ["Biomédica", "Biotecnología Industrial", "Ciencia de la Administración", "Ciencias de Alimentos", "Ciencias de Alimentos Industrial", "Civil", "Ciencias de la Computación", "Electrónica", "Industrial", "Mecánica", "Mecánica Industrial", "Mecatrónica", "Química", "Química Industrial"],
     "Ciencias Sociales": ["Antropología", "Arqueología", "Psicología", "Relaciones Internacionales"],
@@ -66,3 +68,4 @@ def cargar_cursos(tx, cursos):
 
 conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
 cargar_estudiantes(conn, estudiantes)
+crear_relaciones(conn, estudiantes)
