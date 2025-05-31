@@ -186,11 +186,6 @@
                                         {% endif %}
                                     </div>
                                 </div>
-                                {% if curso.descripcion %}
-                                <div class="course-description">
-                                    {{ curso.descripcion }}
-                                </div>
-                                {% endif %}
                             </div>
                             {% endfor %}
                         {% endif %}
@@ -272,9 +267,11 @@
                                     </div>
                                 </div>
                                 {% if curso.descripcion %}
+                                {% if curso in cursos_no_tomados %}
                                 <div class="course-description">
                                     {{ curso.descripcion }}
                                 </div>
+                                {% endif %}
                                 {% endif %}
                                 <div class="course-actions">
                                     <button class="add-course-btn" title="Marcar como tomado" data-course-id="{{ curso.nombre }}">
@@ -548,25 +545,7 @@
                     courseTitle.textContent = courseCard.dataset.course || 'Curso sin nombre';
                     courseInfo.appendChild(courseTitle);
                 }
-                
-                // Cambiar botón
-                const actionBtn = courseCard.querySelector('.add-course-btn');
-                const courseActions = courseCard.querySelector('.course-actions');
-                
-                actionBtn.className = 'remove-course-btn';
-                actionBtn.innerHTML = '<i class="fas fa-undo"></i><span>Desmarcar</span>';
-                actionBtn.title = 'Marcar como no tomado';
-                
-                // Add edit rating button if rating exists
-                if (rating) {
-                    const editBtn = document.createElement('button');
-                    editBtn.className = 'edit-rating-btn';
-                    editBtn.title = 'Editar calificación';
-                    editBtn.dataset.courseId = actionBtn.dataset.courseId;
-                    editBtn.dataset.currentRating = rating;
-                    editBtn.innerHTML = '<i class="fas fa-edit"></i><span>Editar Rating</span>';
-                    courseActions.appendChild(editBtn);
-                }
+    
                 
                 // Agregar estado de completado
                 const courseHeader = courseCard.querySelector('.course-header');
@@ -586,42 +565,6 @@
                 
                 // Animación
                 courseCard.style.animation = 'slideInLeft 0.5s ease';
-                
-                updateStats();
-            }
-
-            // Mover curso a disponibles
-            function marcarComoDisponible(courseCard) {
-                courseCard.classList.remove('completed');
-                courseCard.classList.add('available');
-                
-                // Cambiar botón
-                const actionBtn = courseCard.querySelector('.remove-course-btn');
-                actionBtn.className = 'add-course-btn';
-                actionBtn.innerHTML = '<i class="fas fa-plus"></i><span>Marcar como Tomado</span>';
-                actionBtn.title = 'Marcar como tomado';
-                
-                // Remove edit rating button
-                const editBtn = courseCard.querySelector('.edit-rating-btn');
-                if (editBtn) {
-                    editBtn.remove();
-                }
-                
-                // Restaurar dificultad
-                const courseStatus = courseCard.querySelector('.course-status');
-                if (courseStatus) {
-                    const courseName = courseCard.dataset.course;
-                    const difficulty = getDifficultyFromCourse(courseName);
-                    
-                    courseStatus.innerHTML = `<span class="difficulty-badge ${difficulty.class}">${difficulty.text}</span>`;
-                    courseStatus.className = 'course-difficulty';
-                }
-                
-                // Mover al contenedor de disponibles
-                cursosDisponibles.appendChild(courseCard);
-                
-                // Animación
-                courseCard.style.animation = 'slideInRight 0.5s ease';
                 
                 updateStats();
             }

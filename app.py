@@ -232,12 +232,13 @@ def ranking():
 @app.route('/agregar_curso', methods=['POST', 'GET'])
 @login_requerido
 def agregar_curso():
-    nombre = request.form['nombre']
-    descripcion = request.form['descripcion']
+    if request.method == 'POST':
+        nombre = request.form['nombre']
+        descripcion = request.form['descripcion']
 
-    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
-    crear_curso(conn, nombre, descripcion)
-    conn.cerrar()
+        conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+        crear_curso(conn, nombre, descripcion)
+        conn.cerrar()
 
     return render_template("agregar_curso.html")
 
