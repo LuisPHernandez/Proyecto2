@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Curso - UVG Course Recommendation System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <a href="{{ url_for('admin') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Panel</span>
+                </a>
+                <div class="user-info">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Administración</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-badge">
+                    <i class="fas fa-book-open"></i>
+                    <span>Gestión Académica</span>
+                </div>
+                <h1 class="page-title">Agregar Nuevo Curso</h1>
+                <p class="page-subtitle">Crea un nuevo curso para el catálogo académico de la universidad</p>
+            </div>
+
+            <!-- Form Section -->
+            <div class="form-section">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <div class="form-info">
+                            <h2 class="form-title">Información del Curso</h2>
+                            <p class="form-subtitle">Completa los datos básicos del nuevo curso</p>
+                        </div>
+                    </div>
+
+                    <form id="course-form" method="POST" action="{{ url_for('agregar_curso') }}" class="course-form">
+                        <div class="form-grid">
+                            <!-- Nombre del Curso -->
+                            <div class="form-group full-width">
+                                <label for="nombre" class="form-label">
+                                    <i class="fas fa-book"></i>
+                                    <span>Nombre del Curso</span>
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="input-container">
+                                    <input 
+                                        type="text" 
+                                        id="nombre" 
+                                        name="nombre" 
+                                        class="form-input"
+                                        placeholder="Ej: Programación Orientada a Objetos"
+                                        required
+                                        maxlength="100"
+                                    >
+                                    <div class="input-icon">
+                                        <i class="fas fa-book"></i>
+                                    </div>
+                                </div>
+                                <div class="form-feedback" id="nombre-feedback"></div>
+                                <div class="character-count">
+                                    <span id="nombre-count">0</span>/100
+                                </div>
+                            </div>
+
+
+                                <div class="form-feedback" id="codigo-feedback"></div>
+                            </div>
+
+                            <!-- Descripción -->
+                            <div class="form-group full-width">
+                                <label for="descripcion" class="form-label">
+                                    <i class="fas fa-align-left"></i>
+                                    <span>Descripción del Curso</span>
+                                    <span class="required">*</span>
+                                </label>
+                                <div class="textarea-container">
+                                    <textarea 
+                                        id="descripcion" 
+                                        name="descripcion" 
+                                        class="form-textarea"
+                                        placeholder="Describe los objetivos, contenido y metodología del curso..."
+                                        required
+                                        maxlength="500"
+                                        rows="4"
+                                    ></textarea>
+                                    <div class="textarea-icon">
+                                        <i class="fas fa-align-left"></i>
+                                    </div>
+                                </div>
+                                <div class="form-feedback" id="descripcion-feedback"></div>
+                                <div class="character-count">
+                                    <span id="descripcion-count">0</span>/500
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <a href="{{ url_for('admin') }}" class="cancel-button">
+                                <i class="fas fa-times"></i>
+                                <span>Cancelar</span>
+                            </a>
+                            <button type="submit" class="submit-button" id="submit-btn">
+                                <i class="fas fa-plus"></i>
+                                <span>Crear Curso</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-container">
+                    <div class="preview-header">
+                        <div class="preview-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <h3 class="preview-title">Vista Previa</h3>
+                    </div>
+                    <div class="preview-content">
+                        <div class="course-preview-card">
+                            <div class="course-preview-header">
+                                <div class="course-preview-info">
+                                    <h4 class="course-preview-name" id="preview-nombre">Nombre del Curso</h4>
+                                    <span class="course-preview-code" id="preview-codigo">CÓDIGO</span>
+                                </div>
+                                <div class="course-preview-difficulty">
+                                    <span class="difficulty-badge" id="preview-dificultad">Intermedio</span>
+                                </div>
+                            </div>
+                            <div class="course-preview-description" id="preview-descripcion">
+                                La descripción del curso aparecerá aquí...
+                            </div>
+                            <div class="course-preview-meta">
+                                <span class="course-preview-credits" id="preview-creditos">
+                                    <i class="fas fa-star"></i>
+                                    - créditos
+                                </span>
+                                <span class="course-preview-category" id="preview-categoria">
+                                    <i class="fas fa-tag"></i>
+                                    Categoría
+                                </span>
+                                <span class="course-preview-semester" id="preview-semestre">
+                                    <i class="fas fa-calendar"></i>
+                                    - Semestre
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-green: #138b45;
+            --primary-green-light: #16a34a;
+            --primary-green-dark: #0f7a3c;
+            --secondary-green: #dcfce7;
+            --accent-blue: #3b82f6;
+            --accent-red: #ef4444;
+            --accent-orange: #f59e0b;
+            --neutral-50: #fafafa;
+            --neutral-100: #f5f5f5;
+            --neutral-200: #e5e5e5;
+            --neutral-300: #d4d4d4;
+            --neutral-400: #a3a3a3;
+            --neutral-500: #737373;
+            --neutral-600: #525252;
+            --neutral-700: #404040;
+            --neutral-800: #262626;
+            --neutral-900: #171717;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+        }
+
+        /* Reset and Base Styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--neutral-700);
+            background: linear-gradient(135deg, var(--neutral-50) 0%, var(--secondary-green) 100%);
+            min-height: 100vh;
+            font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+            overflow-x: hidden;
+        }
+
+        /* Background Elements */
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .bg-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            opacity: 0.05;
+            animation: float 10s ease-in-out infinite;
+        }
+
+        .bg-shape.shape-1 {
+            width: 350px;
+            height: 350px;
+            top: 5%;
+            right: 5%;
+            animation-delay: 0s;
+        }
+
+        .bg-shape.shape-2 {
+            width: 250px;
+            height: 250px;
+            bottom: 10%;
+            left: 0%;
+            animation-delay: 4s;
+        }
+
+        .bg-shape.shape-3 {
+            width: 180px;
+            height: 180px;
+            top: 50%;
+            right: 25%;
+            animation-delay: 8s;
+        }
+
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-green);
+            border-radius: 50%;
+            opacity: 0.2;
+            animation: particle 15s linear infinite;
+        }
+
+        .particle:nth-child(1) { top: 15%; left: 15%; animation-delay: 0s; }
+        .particle:nth-child(2) { top: 65%; left: 85%; animation-delay: 3s; }
+        .particle:nth-child(3) { top: 85%; left: 25%; animation-delay: 6s; }
+        .particle:nth-child(4) { top: 25%; left: 75%; animation-delay: 9s; }
+        .particle:nth-child(5) { top: 75%; left: 55%; animation-delay: 12s; }
+        .particle:nth-child(6) { top: 45%; left: 35%; animation-delay: 15s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(8deg); }
+        }
+
+        @keyframes particle {
+            0%, 100% { transform: translateY(0px) scale(1); opacity: 0.2; }
+            50% { transform: translateY(-20px) scale(1.3); opacity: 0.5; }
+        }
+
+        /* Header */
+        .header {
+            padding: 1.5rem 0;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-link {
+            text-decoration: none;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .brand-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .brand-logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            border-radius: var(--radius-lg);
+        }
+
+        .brand-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .brand-name {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--neutral-900);
+            line-height: 1;
+        }
+
+        .brand-subtitle {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--neutral-500);
+            line-height: 1;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .back-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            text-decoration: none;
+            border-radius: var(--radius-lg);
+            font-weight: 600;
+            font-size: 0.875rem;
+            transition: all 0.3s ease;
+            border: 1px solid var(--neutral-200);
+        }
+
+        .back-button:hover {
+            background: var(--primary-green);
+            color: white;
+            border-color: var(--primary-green);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--neutral-600);
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .user-info i {
+            color: var(--primary-green);
+            font-size: 1.25rem;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 2rem 0 4rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .header-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.6s ease;
+        }
+
+        .page-title {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--neutral-900);
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        .page-subtitle {
+            font-size: 1.25rem;
+            color: var(--neutral-600);
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        /* Form Section */
+        .form-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 3rem;
+            animation: fadeInUp 0.6s ease 0.6s both;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            border: 1px solid var(--neutral-200);
+        }
+
+        .form-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .form-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            border-radius: var(--radius-xl);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .form-info {
+            flex: 1;
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 0.25rem;
+        }
+
+        .form-subtitle {
+            color: var(--neutral-600);
+            font-size: 0.875rem;
+        }
+
+        /* Form Grid */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        /* Form Elements */
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: var(--neutral-700);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-label i {
+            color: var(--primary-green);
+            font-size: 0.875rem;
+        }
+
+        .required {
+            color: var(--accent-red);
+            font-weight: 700;
+        }
+
+        .input-container,
+        .textarea-container {
+            position: relative;
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.875rem 1rem 0.875rem 2.5rem;
+            border: 2px solid var(--neutral-200);
+            border-radius: var(--radius-lg);
+            font-size: 0.875rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 120px;
+            line-height: 1.5;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(19, 139, 69, 0.1);
+        }
+
+        .form-input:invalid,
+        .form-select:invalid,
+        .form-textarea:invalid {
+            border-color: var(--accent-red);
+        }
+
+        .form-input:valid,
+        .form-select:valid,
+        .form-textarea:valid {
+            border-color: var(--primary-green);
+        }
+
+        .input-icon,
+        .textarea-icon,
+        .select-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--neutral-400);
+            font-size: 0.875rem;
+            pointer-events: none;
+        }
+
+        .textarea-icon {
+            top: 1rem;
+            transform: none;
+        }
+
+        .select-icon {
+            left: auto;
+            right: 1rem;
+            pointer-events: none;
+        }
+
+        .form-select {
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .character-count {
+            text-align: right;
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+        }
+
+        .form-feedback {
+            margin-top: 0.25rem;
+            font-size: 0.75rem;
+            min-height: 1rem;
+        }
+
+        .form-feedback.error {
+            color: var(--accent-red);
+        }
+
+        .form-feedback.success {
+            color: var(--primary-green);
+        }
+
+        /* Form Actions */
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--neutral-200);
+        }
+
+        .cancel-button,
+        .submit-button {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.875rem 1.5rem;
+            border-radius: var(--radius-xl);
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+        }
+
+        .cancel-button {
+            background: var(--neutral-100);
+            color: var(--neutral-700);
+            border: 2px solid var(--neutral-200);
+        }
+
+        .cancel-button:hover {
+            background: var(--neutral-200);
+            color: var(--neutral-800);
+            transform: translateY(-1px);
+        }
+
+        .submit-button {
+            background: linear-gradient(135deg, var(--primary-green), var(--primary-green-light));
+            color: white;
+        }
+
+        .submit-button:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-lg);
+            background: linear-gradient(135deg, var(--primary-green-dark), var(--primary-green));
+        }
+
+        .submit-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Preview Section */
+        .preview-container {
+            background: white;
+            border-radius: var(--radius-2xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--neutral-200);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--neutral-200);
+        }
+
+        .preview-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--accent-blue), #60a5fa);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .preview-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+        }
+
+        .course-preview-card {
+            background: var(--neutral-50);
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            border: 1px solid var(--neutral-200);
+            transition: all 0.3s ease;
+        }
+
+        .course-preview-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .course-preview-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: var(--neutral-900);
+            margin-bottom: 0.25rem;
+            line-height: 1.3;
+        }
+
+        .course-preview-code {
+            font-size: 0.75rem;
+            color: var(--neutral-500);
+            font-weight: 500;
+            background: var(--neutral-200);
+            padding: 0.125rem 0.5rem;
+            border-radius: var(--radius-sm);
+        }
+
+        .difficulty-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm);
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .course-preview-description {
+            font-size: 0.875rem;
+            color: var(--neutral-600);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            min-height: 2.5rem;
+        }
+
+        .course-preview-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .course-preview-credits,
+        .course-preview-category,
+        .course-preview-semester {
+            display: flex;
+            align-items: center;
+            gap: 0.375rem;
+            font-size: 0.75rem;
+            color: var(--neutral-600);
+        }
+
+        .course-preview-meta i {
+            color: var(--primary-green);
+            font-size: 0.75rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .form-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .preview-container {
+                position: static;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 1rem;
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .page-subtitle {
+                font-size: 1.125rem;
+            }
+
+            .form-container,
+            .preview-container {
+                padding: 1.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .cancel-button,
+            .submit-button {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .back-button span {
+                display: none;
+            }
+
+            .back-button {
+                width: 40px;
+                height: 40px;
+                padding: 0;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 0.5rem;
+            }
+
+            .page-title {
+                font-size: 1.75rem;
+            }
+
+            .form-container,
+            .preview-container {
+                padding: 1rem;
+            }
+        }
+
+        /* Focus States for Accessibility */
+        .back-button:focus,
+        .cancel-button:focus,
+        .submit-button:focus,
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: 2px solid var(--primary-green);
+            outline-offset: 2px;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form elements
+            const form = document.getElementById('course-form');
+            const nombreInput = document.getElementById('nombre');
+            const codigoInput = document.getElementById('codigo');
+            const creditosSelect = document.getElementById('creditos');
+            const categoriaSelect = document.getElementById('categoria');
+            const semestreSelect = document.getElementById('semestre');
+            const dificultadSelect = document.getElementById('dificultad');
+            const descripcionTextarea = document.getElementById('descripcion');
+            const submitBtn = document.getElementById('submit-btn');
+
+            // Character counters
+            const nombreCount = document.getElementById('nombre-count');
+            const descripcionCount = document.getElementById('descripcion-count');
+
+            // Preview elements
+            const previewNombre = document.getElementById('preview-nombre');
+            const previewCodigo = document.getElementById('preview-codigo');
+            const previewCreditos = document.getElementById('preview-creditos');
+            const previewCategoria = document.getElementById('preview-categoria');
+            const previewSemestre = document.getElementById('preview-semestre');
+            const previewDificultad = document.getElementById('preview-dificultad');
+            const previewDescripcion = document.getElementById('preview-descripcion');
+
+            // Feedback elements
+            const nombreFeedback = document.getElementById('nombre-feedback');
+            const codigoFeedback = document.getElementById('codigo-feedback');
+            const creditosFeedback = document.getElementById('creditos-feedback');
+            const categoriaFeedback = document.getElementById('categoria-feedback');
+            const descripcionFeedback = document.getElementById('descripcion-feedback');
+
+            // Character counting
+            function updateCharacterCount(input, counter, max) {
+                const count = input.value.length;
+                counter.textContent = count;
+                
+                if (count > max * 0.9) {
+                    counter.style.color = 'var(--accent-red)';
+                } else if (count > max * 0.7) {
+                    counter.style.color = 'var(--accent-orange)';
+                } else {
+                    counter.style.color = 'var(--neutral-500)';
+                }
+            }
+
+            // Real-time preview updates
+            function updatePreview() {
+                previewNombre.textContent = nombreInput.value || 'Nombre del Curso';
+                previewCodigo.textContent = codigoInput.value || 'CÓDIGO';
+                previewDescripcion.textContent = descripcionTextarea.value || 'La descripción del curso aparecerá aquí...';
+                
+                const creditos = creditosSelect.value;
+                previewCreditos.innerHTML = `<i class="fas fa-star"></i>${creditos ? creditos + ' crédito' + (creditos !== '1' ? 's' : '') : '- créditos'}`;
+                
+                const categoria = categoriaSelect.value;
+                previewCategoria.innerHTML = `<i class="fas fa-tag"></i>${categoria || 'Categoría'}`;
+                
+                const semestre = semestreSelect.value;
+                previewSemestre.innerHTML = `<i class="fas fa-calendar"></i>${semestre ? semestre + (semestre === '1' ? 'er' : semestre === '3' ? 'er' : 'do') + ' Semestre' : '- Semestre'}`;
+                
+                const dificultad = dificultadSelect.value || 'Intermedio';
+                previewDificultad.textContent = dificultad;
+                previewDificultad.className = 'difficulty-badge ' + dificultad.toLowerCase();
+            }
+
+            // Validation functions
+            function validateNombre() {
+                const value = nombreInput.value.trim();
+                if (value.length < 3) {
+                    showFeedback(nombreFeedback, 'El nombre debe tener al menos 3 caracteres', 'error');
+                    return false;
+                } else if (value.length > 100) {
+                    showFeedback(nombreFeedback, 'El nombre no puede exceder 100 caracteres', 'error');
+                    return false;
+                } else {
+                    showFeedback(nombreFeedback, 'Nombre válido', 'success');
+                    return true;
+                }
+            }
+
+            function validateCodigo() {
+                const value = codigoInput.value.trim().toUpperCase();
+                const pattern = /^[A-Z]{2}[0-9]{4}$/;
+                
+                if (!value) {
+                    showFeedback(codigoFeedback, 'El código es requerido', 'error');
+                    return false;
+                } else if (!pattern.test(value)) {
+                    showFeedback(codigoFeedback, 'Formato: 2 letras + 4 números (ej: CC2001)', 'error');
+                    return false;
+                } else {
+                    showFeedback(codigoFeedback, 'Código válido', 'success');
+                    codigoInput.value = value; // Auto-format to uppercase
+                    return true;
+                }
+            }
+
+            function validateCreditos() {
+                const value = creditosSelect.value;
+                if (!value) {
+                    showFeedback(creditosFeedback, 'Selecciona el número de créditos', 'error');
+                    return false;
+                } else {
+                    showFeedback(creditosFeedback, 'Créditos seleccionados', 'success');
+                    return true;
+                }
+            }
+
+            function validateCategoria() {
+                const value = categoriaSelect.value;
+                if (!value) {
+                    showFeedback(categoriaFeedback, 'Selecciona una categoría', 'error');
+                    return false;
+                } else {
+                    showFeedback(categoriaFeedback, 'Categoría seleccionada', 'success');
+                    return true;
+                }
+            }
+
+            function validateDescripcion() {
+                const value = descripcionTextarea.value.trim();
+                if (value.length < 10) {
+                    showFeedback(descripcionFeedback, 'La descripción debe tener al menos 10 caracteres', 'error');
+                    return false;
+                } else if (value.length > 500) {
+                    showFeedback(descripcionFeedback, 'La descripción no puede exceder 500 caracteres', 'error');
+                    return false;
+                } else {
+                    showFeedback(descripcionFeedback, 'Descripción válida', 'success');
+                    return true;
+                }
+            }
+
+            function showFeedback(element, message, type) {
+                element.textContent = message;
+                element.className = `form-feedback ${type}`;
+            }
+
+            function validateForm() {
+                const isValid = validateNombre() && 
+                               validateCodigo() && 
+                               validateCreditos() && 
+                               validateCategoria() && 
+                               validateDescripcion();
+                
+                submitBtn.disabled = !isValid;
+                return isValid;
+            }
+
+            // Event listeners
+            nombreInput.addEventListener('input', function() {
+                updateCharacterCount(this, nombreCount, 100);
+                validateNombre();
+                updatePreview();
+            });
+
+            codigoInput.addEventListener('input', function() {
+                validateCodigo();
+                updatePreview();
+            });
+
+            creditosSelect.addEventListener('change', function() {
+                validateCreditos();
+                updatePreview();
+            });
+
+            categoriaSelect.addEventListener('change', function() {
+                validateCategoria();
+                updatePreview();
+            });
+
+            semestreSelect.addEventListener('change', updatePreview);
+            dificultadSelect.addEventListener('change', updatePreview);
+
+            descripcionTextarea.addEventListener('input', function() {
+                updateCharacterCount(this, descripcionCount, 500);
+                validateDescripcion();
+                updatePreview();
+            });
+
+            // Form submission
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateForm()) {
+                    showNotification('Por favor, corrige los errores en el formulario', 'error');
+                    return;
+                }
+
+                // Show loading state
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Creando Curso...</span>';
+                submitBtn.disabled = true;
+
+                // Prepare form data
+                const formData = new FormData(form);
+                
+                // Send to backend
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('Curso creado exitosamente', 'success');
+                        setTimeout(() => {
+                            window.location.href = "{{ url_for('agregar_curso') }}";
+                        }, 2000);
+                    } else {
+                        showNotification(data.message || 'Error al crear el curso', 'error');
+                        submitBtn.innerHTML = '<i class="fas fa-plus"></i><span>Crear Curso</span>';
+                        submitBtn.disabled = false;
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Error de conexión', 'error');
+                    submitBtn.innerHTML = '<i class="fas fa-plus"></i><span>Crear Curso</span>';
+                    submitBtn.disabled = false;
+                });
+            });
+
+            // Notification system
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 4000);
+            }
+
+            // Initialize
+            updatePreview();
+            validateForm();
+        });
+    </script>
+
+    <style>
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border-left: 4px solid;
+            max-width: 400px;
+        }
+
+        .notification.success {
+            border-left-color: #16a34a;
+            color: #166534;
+        }
+
+        .notification.error {
+            border-left-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100%);
+                max-width: none;
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>

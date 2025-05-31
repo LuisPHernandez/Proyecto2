@@ -103,10 +103,11 @@ def login_requerido(f):
         return f(*args, **kwargs)
     return decorada
 
-@app.route('/admin')
+@app.route('/admin',  methods=['GET', 'POST'])
 @login_requerido
 def admin():
     return render_template('admin.html')
+
 
 @app.route('/estudiante')
 @login_requerido
@@ -194,6 +195,19 @@ def ranking():
     cursos = obtener_cursos_mejor_valorados(conn, limite=10)
     conn.cerrar()
     return render_template('ranking.html', cursos=cursos)
+
+
+@app.route('/agregar_curso', methods=['POST', 'GET'])
+@login_requerido
+def agregar_curso():
+    nombre = request.form['nombre']
+    descripcion = request.form['descripcion']
+
+    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+    crear_curso(conn, nombre, descripcion)
+    conn.cerrar()
+
+    return render_template("agregar_curso.html")
 
 if (__name__ == "__main__"):
     app.run(debug=True)
