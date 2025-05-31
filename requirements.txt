@@ -1,0 +1,4 @@
+Flask
+Flask-SQLAlchemy
+neo4j
+numpy
