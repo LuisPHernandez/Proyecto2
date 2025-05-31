@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, redirect, flash, session
+from flask import Flask, render_template, url_for, request, redirect, flash, session, jsonify
 from functools import wraps
 from test import procesar_personalidad
 from forms import *
@@ -187,6 +187,38 @@ def recomendaciones():
     # Obtener cursos recomendados usando el algoritmo híbrido
     cursos = recomendar_cursos_hibrido(conn, nombre)
     return render_template('recomendaciones.html', cursos=cursos, datos_usuario=datos_usuario)
+
+@app.route('/cursos')
+@login_requerido
+def cursos():
+    nombre = session['nombre']
+
+    conn = Neo4jConnection(uri="bolt://localhost", autor=("neo4j", "lipelupaadair"))
+    cursos_tomados = obtener_cursos_rateados_por_estudiante(conn, nombre)
+    cursos_no_tomados = obtener_cursos_no_tomados_por_estudiante(conn, nombre)
+
+    return render_template("cursos.html", cursos_tomados=cursos_tomados, cursos_no_tomados=cursos_no_tomados, nombre=nombre)
+
+@app.route('/calificar_curso', methods=['POST'])
+@login_requerido
+def calificar_curso():
+    data = request.get_json()
+    nombre_estudiante = data.get('estudiante')
+    nombre_curso = data.get('curso_id')
+    rating = float(data.get('rating', 0))
+
+    if not nombre_estudiante or not nombre_curso or rating == 0:
+        return jsonify({'success': False, 'error': 'Datos incompletos'})
+
+    conn = Neo4jConnection(URI, AUTH)
+    try:
+        agregar_rating(conn, nombre_estudiante, nombre_curso, rating)
+        return jsonify({'success': True})
+    except Exception as e:
+        print("Error al calificar curso:", e)
+        return jsonify({'success': False, 'error': str(e)})
+    finally:
+        conn.cerrar()
 
 @app.route('/ranking')
 @login_requerido

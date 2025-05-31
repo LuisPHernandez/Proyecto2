@@ -99,7 +99,7 @@ def cargar_cursos(conn, cursos):
     query = """
     UNWIND $cursos AS cur
     MERGE (c:Curso {nombre: cur.nombre})
-    SET c.descripcion = c.descripcion
+    SET c.descripcion = cur.descripcion
     """
     conn.correr_query(query, {"cursos": cursos})
 
