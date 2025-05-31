@@ -200,3 +200,34 @@ def obtener_cursos_mejor_valorados(conn, limite=10):
         }
         for r in resultados
     ]
+
+def obtener_cursos_rateados_por_estudiante(conn, nombre_estudiante):
+    query = """
+    MATCH (e:Estudiante {nombre: $nombre})-[r:RATED]->(c:Curso)
+    RETURN c.nombre AS curso, r.rating AS rating
+    """
+    resultados = conn.correr_query(query, {'nombre': nombre_estudiante})
+    return [
+        {
+            "curso": r["curso"],
+            "rating": r["rating"]
+        }
+        for r in resultados
+    ]
+
+def obtener_cursos_no_tomados_por_estudiante(conn, nombre_estudiante):
+    query = """
+    MATCH (c:Curso)
+    WHERE NOT EXISTS {
+        MATCH (:Estudiante {nombre: $nombre})-[r:RATED]->(c)
+    }
+    RETURN c.nombre AS nombre, c.descripcion AS descripcion
+    """
+    resultados = conn.correr_query(query, {'nombre': nombre_estudiante})
+    return [
+        {
+            "nombre": r["nombre"],
+            "descripcion": r["descripcion"]
+        }
+        for r in resultados
+    ]

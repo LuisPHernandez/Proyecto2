@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Cursos - UVG Course Recommendation System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='cursos_styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Background Elements -->
+    <div class="background">
+        <div class="bg-shape shape-1"></div>
+        <div class="bg-shape shape-2"></div>
+        <div class="bg-shape shape-3"></div>
+        <div class="bg-particles">
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+            <div class="particle"></div>
+        </div>
+    </div>
+
+    <!-- Rating Modal -->
+    <div class="modal-overlay" id="rating-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Calificar Curso</h3>
+                <button class="modal-close" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="course-rating-info">
+                    <div class="rating-course-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <div class="rating-course-details">
+                        <h4 id="rating-course-name">Nombre del Curso</h4>
+                        <p id="rating-course-code">Código del Curso</p>
+                    </div>
+                </div>
+                
+                <div class="rating-section">
+                    <label class="rating-label">¿Cómo calificarías este curso?</label>
+                    <div class="rating-scale">
+                        <div class="rating-stars" id="rating-stars">
+                            <span class="star" data-rating="1"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="2"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="3"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="4"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="5"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="6"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="7"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="8"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="9"><i class="far fa-star"></i></span>
+                            <span class="star" data-rating="10"><i class="far fa-star"></i></span>
+                        </div>
+                        <div class="rating-display">
+                            <span class="rating-number" id="rating-number">0</span>
+                            <span class="rating-text">/10</span>
+                        </div>
+                    </div>
+                    
+                    <div class="rating-slider-container">
+                        <input type="range" id="rating-slider" min="0" max="10" value="0" class="rating-slider">
+                        <div class="slider-labels">
+                            <span>0</span>
+                            <span>5</span>
+                            <span>10</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="comment-section">
+                    <label class="comment-label">Comentario (opcional)</label>
+                    <textarea id="rating-comment" placeholder="Comparte tu experiencia con este curso..." maxlength="500"></textarea>
+                    <div class="comment-counter">
+                        <span id="comment-count">0</span>/500
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancel-rating">Cancelar</button>
+                <button class="submit-btn" id="submit-rating" disabled>
+                    <i class="fas fa-star"></i>
+                    <span>Calificar Curso</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="brand-link">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="brand-logo-img">
+                    </div>
+                    <div class="brand-text">
+                        <span class="brand-name">UVG</span>
+                        <span class="brand-subtitle">Course Recommendation System</span>
+                    </div>
+                </div>
+            </a>
+            <div class="header-actions">
+                <a href="{{ url_for('estudiante') }}" class="back-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Regresar</span>
+                </a>
+                <div class="user-info">
+                    <i class="fas fa-book-open"></i>
+                    <span>Gestión de Cursos</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="header-badge">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Mi Progreso Académico</span>
+                </div>
+                <h1 class="page-title">Gestión de Cursos</h1>
+                <p class="page-subtitle">Administra los cursos que has tomado y explora nuevas opciones académicas</p>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-section">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="cursos-tomados-count">{{ cursos_tomados|length }}</span>
+                        <span class="stat-label">Cursos Completados</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-book"></i>
+                    </div>
+                    <div class="stat-content">
+                        <span class="stat-number" id="cursos-disponibles-count">{{ cursos_no_tomados|length }}</span>
+                        <span class="stat-label">Cursos Disponibles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Courses Management Section -->
+            <div class="courses-management">
+                <!-- Cursos Tomados -->
+                <div class="courses-section">
+                    <div class="section-header">
+                        <div class="section-icon completed">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="section-info">
+                            <h2 class="section-title">Cursos Completados</h2>
+                            <p class="section-subtitle">Cursos que ya has tomado</p>
+                        </div>
+                    </div>
+                    
+                    <div class="courses-container" id="cursos-tomados">
+                        {% if cursos_tomados %}
+                            {% for curso in cursos_tomados %}
+                            <div class="course-card completed" data-course="{{ curso.nombre }}" style="--delay: {{ loop.index0 * 0.1 }}s">
+                                <div class="course-header">
+                                    <div class="course-info">
+                                        <h3 class="course-title">{{ curso.curso }}</h3>
+                                    </div>
+                                    <div class="course-status">
+                                        <i class="fas fa-star"></i>
+                                        {% if curso.rating %}
+                                        <div class="course-rating-display">
+                                            <span class="rating-value">{{ curso.rating }}/10</span>
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% if curso.descripcion %}
+                                <div class="course-description">
+                                    {{ curso.descripcion }}
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    {% if not cursos_tomados %}
+                    <div class="empty-state" id="empty-tomados">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>No has completado cursos aún</h3>
+                        <p>Marca los cursos que has tomado desde la sección de cursos disponibles.</p>
+                    </div>
+                    {% else %}
+                    <div class="empty-state" id="empty-tomados" style="display: none;">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>No has completado cursos aún</h3>
+                        <p>Marca los cursos que has tomado desde la sección de cursos disponibles.</p>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Cursos Disponibles -->
+                <div class="courses-section">
+                    <div class="section-header">
+                        <div class="section-icon available">
+                            <i class="fas fa-book-open"></i>
+                        </div>
+                        <div class="section-info">
+                            <h2 class="section-title">Cursos Disponibles</h2>
+                            <p class="section-subtitle">Cursos que puedes tomar</p>
+                        </div>
+                    </div>
+
+                    <!-- Search and Filter -->
+                    <div class="search-filter-section">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="search-courses" placeholder="Buscar cursos...">
+                        </div>
+                        <div class="filter-buttons">
+                            <button class="filter-btn active" data-filter="all">
+                                <i class="fas fa-list"></i>
+                                Todos
+                            </button>
+                            {% set categorias = cursos_no_tomados|map(attribute='categoria')|unique|list %}
+                            {% for categoria in categorias %}
+                            {% if categoria %}
+                            <button class="filter-btn" data-filter="{{ categoria|lower }}">
+                                {% if categoria|lower == 'matematicas' %}
+                                    <i class="fas fa-calculator"></i>
+                                {% elif categoria|lower == 'programacion' %}
+                                    <i class="fas fa-code"></i>
+                                {% elif categoria|lower == 'ciencias' %}
+                                    <i class="fas fa-flask"></i>
+                                {% elif categoria|lower == 'ingenieria' %}
+                                    <i class="fas fa-cogs"></i>
+                                {% elif categoria|lower == 'humanidades' %}
+                                    <i class="fas fa-book"></i>
+                                {% else %}
+                                    <i class="fas fa-tag"></i>
+                                {% endif %}
+                                {{ categoria }}
+                            </button>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="courses-container" id="cursos-disponibles">
+                        {% if cursos_no_tomados %}
+                            {% for curso in cursos_no_tomados %}
+                            <div class="course-card available" data-course="{{ curso.nombre }}" data-category="{{ curso.categoria|lower if curso.categoria else 'general' }}" style="--delay: {{ loop.index0 * 0.1 }}s">
+                                <div class="course-header">
+                                    <div class="course-info">
+                                        <h3 class="course-title">{{ curso.nombre }}</h3>
+                                    </div>
+                                </div>
+                                {% if curso.descripcion %}
+                                <div class="course-description">
+                                    {{ curso.descripcion }}
+                                </div>
+                                {% endif %}
+                                <div class="course-actions">
+                                    <button class="add-course-btn" title="Marcar como tomado" data-course-id="{{ curso.nombre }}">
+                                        <i class="fas fa-plus"></i>
+                                        <span>Marcar como Tomado</span>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    {% if not cursos_no_tomados %}
+                    <div class="empty-state" id="empty-disponibles">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>No hay cursos disponibles</h3>
+                        <p>No hay cursos disponibles en este momento.</p>
+                    </div>
+                    {% else %}
+                    <div class="empty-state" id="empty-disponibles" style="display: none;">
+                        <div class="empty-state-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>No se encontraron cursos</h3>
+                        <p>No hay cursos disponibles que coincidan con tu búsqueda.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Footer Actions -->
+            <div class="footer-actions">
+                <a href="{{ url_for('estudiante') }}" class="secondary-button">
+                    <i class="fas fa-arrow-left"></i>
+                    <span>Volver al Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const nombreEstudiante = "{{ nombre }}";
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elementos del DOM
+            const cursosTomados = document.getElementById('cursos-tomados');
+            const cursosDisponibles = document.getElementById('cursos-disponibles');
+            const searchInput = document.getElementById('search-courses');
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            // Modal elements
+            const ratingModal = document.getElementById('rating-modal');
+            const closeModal = document.getElementById('close-modal');
+            const cancelRating = document.getElementById('cancel-rating');
+            const submitRating = document.getElementById('submit-rating');
+            const ratingStars = document.getElementById('rating-stars');
+            const ratingSlider = document.getElementById('rating-slider');
+            const ratingNumber = document.getElementById('rating-number');
+            const ratingComment = document.getElementById('rating-comment');
+            const commentCount = document.getElementById('comment-count');
+            
+            let currentCourseId = null;
+            let currentRating = 0;
+            let isEditMode = false;
+
+            // Contadores
+            function updateStats() {
+                const tomadosCount = cursosTomados.querySelectorAll('.course-card').length;
+                const disponiblesCount = cursosDisponibles.querySelectorAll('.course-card').length;
+
+                document.getElementById('cursos-tomados-count').textContent = tomadosCount;
+                document.getElementById('cursos-disponibles-count').textContent = disponiblesCount;
+
+                // Mostrar/ocultar estados vacíos
+                document.getElementById('empty-tomados').style.display = tomadosCount === 0 ? 'block' : 'none';
+                document.getElementById('empty-disponibles').style.display = disponiblesCount === 0 ? 'block' : 'none';
+            }
+
+            // Rating system
+            function updateRatingDisplay(rating) {
+                currentRating = rating;
+                ratingNumber.textContent = rating;
+                ratingSlider.value = rating;
+                
+                // Update stars
+                const stars = ratingStars.querySelectorAll('.star');
+                stars.forEach((star, index) => {
+                    const starIcon = star.querySelector('i');
+                    if (index < rating) {
+                        starIcon.className = 'fas fa-star';
+                        star.classList.add('active');
+                    } else {
+                        starIcon.className = 'far fa-star';
+                        star.classList.remove('active');
+                    }
+                });
+                
+                // Enable/disable submit button
+                submitRating.disabled = rating === 0;
+            }
+
+            // Star rating interaction
+            ratingStars.addEventListener('click', function(e) {
+                const star = e.target.closest('.star');
+                if (star) {
+                    const rating = parseInt(star.dataset.rating);
+                    updateRatingDisplay(rating);
+                }
+            });
+
+            // Slider interaction
+            ratingSlider.addEventListener('input', function() {
+                updateRatingDisplay(parseInt(this.value));
+            });
+
+            // Comment counter
+            ratingComment.addEventListener('input', function() {
+                commentCount.textContent = this.value.length;
+            });
+
+            // Modal functions
+            function openRatingModal(courseId, courseName, courseCode, currentRatingValue = 0) {
+                currentCourseId = courseId;
+                document.getElementById('rating-course-name').textContent = courseName;
+                
+                if (currentRatingValue > 0) {
+                    isEditMode = true;
+                    updateRatingDisplay(currentRatingValue);
+                    submitRating.innerHTML = '<i class="fas fa-edit"></i><span>Actualizar Rating</span>';
+                } else {
+                    isEditMode = false;
+                    updateRatingDisplay(0);
+                    submitRating.innerHTML = '<i class="fas fa-star"></i><span>Calificar Curso</span>';
+                }
+                
+                ratingComment.value = '';
+                commentCount.textContent = '0';
+                ratingModal.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeRatingModal() {
+                ratingModal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+                currentCourseId = null;
+                currentRating = 0;
+                isEditMode = false;
+            }
+
+            // Modal event listeners
+            closeModal.addEventListener('click', closeRatingModal);
+            cancelRating.addEventListener('click', closeRatingModal);
+            
+            ratingModal.addEventListener('click', function(e) {
+                if (e.target === ratingModal) {
+                    closeRatingModal();
+                }
+            });
+
+            // Submit rating
+            submitRating.addEventListener('click', function() {
+                if (currentRating === 0) return;
+                
+                const ratingData = {
+                    curso_id: currentCourseId,
+                    rating: currentRating,
+                    is_edit: isEditMode,
+                    estudiante: nombreEstudiante
+                };
+                
+                // Show loading state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Guardando...</span>';
+                this.disabled = true;
+                
+                // Send to backend
+                fetch('/calificar_curso', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(ratingData)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Update UI
+                        if (!isEditMode) {
+                            // Move course to completed section
+                            const courseCard = document.querySelector(`[data-course-id="${currentCourseId}"]`).closest('.course-card');
+                            marcarComoTomado(courseCard, currentRating);
+                        } else {
+                            // Update existing rating display
+                            updateCourseRating(currentCourseId, currentRating);
+                        }
+                        
+                        closeRatingModal();
+                        
+                        // Show success message
+                        showNotification('Curso calificado exitosamente', 'success');
+                    } else {
+                        showNotification('Error al calificar el curso', 'error');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('Error de conexión', 'error');
+                })
+                .finally(() => {
+                    this.innerHTML = isEditMode ? 
+                        '<i class="fas fa-edit"></i><span>Actualizar Rating</span>' : 
+                        '<i class="fas fa-star"></i><span>Calificar Curso</span>';
+                    this.disabled = false;
+                });
+            });
+
+            // Notification system
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+                notification.innerHTML = `
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i>
+                    <span>${message}</span>
+                `;
+                
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.classList.add('show');
+                }, 100);
+                
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
+
+            // Update course rating display
+            function updateCourseRating(courseId, rating) {
+                const courseCard = document.querySelector(`[data-course-id="${courseId}"]`).closest('.course-card');
+                const statusElement = courseCard.querySelector('.course-status');
+                
+                let ratingDisplay = statusElement.querySelector('.course-rating-display');
+                if (!ratingDisplay) {
+                    ratingDisplay = document.createElement('div');
+                    ratingDisplay.className = 'course-rating-display';
+                    statusElement.appendChild(ratingDisplay);
+                }
+                
+                ratingDisplay.innerHTML = `<span class="rating-value">${rating}/10</span>`;
+            }
+
+            // Mover curso a tomados
+            function marcarComoTomado(courseCard, rating = null) {
+                courseCard.classList.remove('available');
+                courseCard.classList.add('completed');
+                let courseInfo = courseCard.querySelector('.course-info');
+                if (!courseInfo) {
+                    courseInfo = document.createElement('div');
+                    courseInfo.className = 'course-info';
+                    const courseHeader = courseCard.querySelector('.course-header');
+                    courseHeader.insertBefore(courseInfo, courseHeader.firstChild);
+                }
+
+                let courseTitle = courseInfo.querySelector('.course-title');
+                if (!courseTitle) {
+                    courseTitle = document.createElement('h3');
+                    courseTitle.className = 'course-title';
+                    courseTitle.textContent = courseCard.dataset.course || 'Curso sin nombre';
+                    courseInfo.appendChild(courseTitle);
+                }
+                
+                // Cambiar botón
+                const actionBtn = courseCard.querySelector('.add-course-btn');
+                const courseActions = courseCard.querySelector('.course-actions');
+                
+                actionBtn.className = 'remove-course-btn';
+                actionBtn.innerHTML = '<i class="fas fa-undo"></i><span>Desmarcar</span>';
+                actionBtn.title = 'Marcar como no tomado';
+                
+                // Add edit rating button if rating exists
+                if (rating) {
+                    const editBtn = document.createElement('button');
+                    editBtn.className = 'edit-rating-btn';
+                    editBtn.title = 'Editar calificación';
+                    editBtn.dataset.courseId = actionBtn.dataset.courseId;
+                    editBtn.dataset.currentRating = rating;
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i><span>Editar Rating</span>';
+                    courseActions.appendChild(editBtn);
+                }
+                
+                // Agregar estado de completado
+                const courseHeader = courseCard.querySelector('.course-header');
+                const difficulty = courseHeader.querySelector('.course-difficulty');
+                if (difficulty) {
+                    const statusHtml = '<div class="course-status"><i class="fas fa-check-circle"></i></div>';
+                    difficulty.innerHTML = statusHtml;
+                    difficulty.className = 'course-status';
+                    
+                    if (rating) {
+                        updateCourseRating(actionBtn.dataset.courseId, rating);
+                    }
+                }
+                
+                // Mover al contenedor de tomados
+                cursosTomados.appendChild(courseCard);
+                
+                // Animación
+                courseCard.style.animation = 'slideInLeft 0.5s ease';
+                
+                updateStats();
+            }
+
+            // Mover curso a disponibles
+            function marcarComoDisponible(courseCard) {
+                courseCard.classList.remove('completed');
+                courseCard.classList.add('available');
+                
+                // Cambiar botón
+                const actionBtn = courseCard.querySelector('.remove-course-btn');
+                actionBtn.className = 'add-course-btn';
+                actionBtn.innerHTML = '<i class="fas fa-plus"></i><span>Marcar como Tomado</span>';
+                actionBtn.title = 'Marcar como tomado';
+                
+                // Remove edit rating button
+                const editBtn = courseCard.querySelector('.edit-rating-btn');
+                if (editBtn) {
+                    editBtn.remove();
+                }
+                
+                // Restaurar dificultad
+                const courseStatus = courseCard.querySelector('.course-status');
+                if (courseStatus) {
+                    const courseName = courseCard.dataset.course;
+                    const difficulty = getDifficultyFromCourse(courseName);
+                    
+                    courseStatus.innerHTML = `<span class="difficulty-badge ${difficulty.class}">${difficulty.text}</span>`;
+                    courseStatus.className = 'course-difficulty';
+                }
+                
+                // Mover al contenedor de disponibles
+                cursosDisponibles.appendChild(courseCard);
+                
+                // Animación
+                courseCard.style.animation = 'slideInRight 0.5s ease';
+                
+                updateStats();
+            }
+
+            // Event listeners para botones de cursos
+            document.addEventListener('click', function(e) {
+                if (e.target.closest('.add-course-btn')) {
+                    const button = e.target.closest('.add-course-btn');
+                    const courseId = button.dataset.courseId;
+                    const courseName = button.dataset.courseName;
+                    const courseCode = button.dataset.courseCode;
+                    
+                    openRatingModal(courseId, courseName, courseCode);
+                }
+                
+                if (e.target.closest('.edit-rating-btn')) {
+                    const button = e.target.closest('.edit-rating-btn');
+                    const courseId = button.dataset.courseId;
+                    const currentRatingValue = parseInt(button.dataset.currentRating);
+                    const courseCard = button.closest('.course-card');
+                    const courseName = courseCard.querySelector('.course-title').textContent;
+                    const courseCode = courseCard.querySelector('.course-code').textContent;
+                    
+                    openRatingModal(courseId, courseName, courseCode, currentRatingValue);
+                }
+                
+                if (e.target.closest('.remove-course-btn')) {
+                    const courseCard = e.target.closest('.course-card');
+                    const courseId = e.target.closest('.remove-course-btn').dataset.courseId;
+                    
+                    // Remove from backend
+                    fetch('/desmarcar_curso', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({curso_id: courseId})
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            marcarComoDisponible(courseCard);
+                            showNotification('Curso desmarcado exitosamente', 'success');
+                        } else {
+                            showNotification('Error al desmarcar el curso', 'error');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error de conexión', 'error');
+                    });
+                }
+            });
+
+            // Búsqueda de cursos
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                const availableCourses = cursosDisponibles.querySelectorAll('.course-card');
+                let visibleCount = 0;
+                
+                availableCourses.forEach(course => {
+                    const title = course.querySelector('.course-title').textContent.toLowerCase();
+                    const code = course.querySelector('.course-code').textContent.toLowerCase();
+                    const description = course.querySelector('.course-description');
+                    const descText = description ? description.textContent.toLowerCase() : '';
+                    
+                    if (title.includes(searchTerm) || code.includes(searchTerm) || descText.includes(searchTerm)) {
+                        course.style.display = 'block';
+                        visibleCount++;
+                    } else {
+                        course.style.display = 'none';
+                    }
+                });
+
+                // Mostrar estado vacío si no hay resultados
+                const emptyState = document.getElementById('empty-disponibles');
+                if (visibleCount === 0 && searchTerm.length > 0) {
+                    emptyState.style.display = 'block';
+                    emptyState.querySelector('h3').textContent = 'No se encontraron cursos';
+                    emptyState.querySelector('p').textContent = 'No hay cursos que coincidan con tu búsqueda.';
+                } else if (cursosDisponibles.querySelectorAll('.course-card').length === 0) {
+                    emptyState.style.display = 'block';
+                    emptyState.querySelector('h3').textContent = 'No hay cursos disponibles';
+                    emptyState.querySelector('p').textContent = 'No hay cursos disponibles en este momento.';
+                } else {
+                    emptyState.style.display = 'none';
+                }
+            });
+
+            // Filtros por categoría
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Actualizar botón activo
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const filter = this.dataset.filter;
+                    const availableCourses = cursosDisponibles.querySelectorAll('.course-card');
+                    let visibleCount = 0;
+                    
+                    availableCourses.forEach(course => {
+                        if (filter === 'all' || course.dataset.category === filter) {
+                            course.style.display = 'block';
+                            visibleCount++;
+                        } else {
+                            course.style.display = 'none';
+                        }
+                    });
+
+                    // Mostrar estado vacío si no hay resultados
+                    const emptyState = document.getElementById('empty-disponibles');
+                    if (visibleCount === 0) {
+                        emptyState.style.display = 'block';
+                        emptyState.querySelector('h3').textContent = 'No hay cursos en esta categoría';
+                        emptyState.querySelector('p').textContent = `No hay cursos disponibles en la categoría ${filter === 'all' ? 'seleccionada' : filter}.`;
+                    } else {
+                        emptyState.style.display = 'none';
+                    }
+                });
+            });
+
+            // Inicializar estadísticas
+            updateStats();
+        });
+    </script>
+
+    <style>
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 1.5rem;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .modal-header {
+            padding: 2rem 2rem 1rem;
+            border-bottom: 1px solid #e5e5e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #171717;
+            margin: 0;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #737373;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: #f5f5f5;
+            color: #171717;
+        }
+
+        .modal-body {
+            padding: 2rem;
+        }
+
+        .course-rating-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+        }
+
+        .rating-course-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #138b45, #16a34a);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+        }
+
+        .rating-course-details h4 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #171717;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .rating-course-details p {
+            font-size: 0.875rem;
+            color: #737373;
+            margin: 0;
+        }
+
+        .rating-section {
+            margin-bottom: 2rem;
+        }
+
+        .rating-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 1rem;
+        }
+
+        .rating-scale {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .rating-stars {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .star {
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #d4d4d4;
+            transition: all 0.3s ease;
+            padding: 0.25rem;
+            border-radius: 0.25rem;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #f59e0b;
+            transform: scale(1.1);
+        }
+
+        .rating-display {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .rating-number {
+            color: #138b45;
+        }
+
+        .rating-text {
+            color: #737373;
+        }
+
+        .rating-slider-container {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .rating-slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: #e5e5e5;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .rating-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #138b45;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .rating-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #138b45;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #737373;
+        }
+
+        .comment-section {
+            margin-bottom: 1rem;
+        }
+
+        .comment-label {
+            display: block;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #171717;
+            margin-bottom: 0.5rem;
+        }
+
+        .comment-section textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #d4d4d4;
+            border-radius: 0.75rem;
+            font-family: inherit;
+            font-size: 0.875rem;
+            resize: vertical;
+            transition: border-color 0.3s ease;
+        }
+
+        .comment-section textarea:focus {
+            outline: none;
+            border-color: #138b45;
+            box-shadow: 0 0 0 3px rgba(19, 139, 69, 0.1);
+        }
+
+        .comment-counter {
+            text-align: right;
+            margin-top: 0.5rem;
+            font-size: 0.75rem;
+            color: #737373;
+        }
+
+        .modal-footer {
+            padding: 1rem 2rem 2rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .cancel-btn,
+        .submit-btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cancel-btn {
+            background: #f5f5f5;
+            color: #737373;
+        }
+
+        .cancel-btn:hover {
+            background: #e5e5e5;
+            color: #525252;
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #138b45, #16a34a);
+            color: white;
+        }
+
+        .submit-btn:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(19, 139, 69, 0.3);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Course rating display */
+        .course-rating-display {
+            margin-top: 0.25rem;
+        }
+
+        .rating-value {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #138b45;
+            background: #dcfce7;
+            padding: 0.125rem 0.375rem;
+            border-radius: 0.375rem;
+        }
+
+        .edit-rating-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #f59e0b;
+            color: white;
+            border: none;
+            border-radius: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            justify-content: center;
+        }
+
+        .edit-rating-btn:hover {
+            background: #d97706;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1001;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            border-left: 4px solid;
+        }
+
+        .notification.success {
+            border-left-color: #16a34a;
+            color: #166534;
+        }
+
+        .notification.error {
+            border-left-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification i {
+            font-size: 1.25rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .modal-content {
+                width: 95%;
+                margin: 1rem;
+            }
+
+            .modal-header,
+            .modal-body {
+                padding: 1.5rem;
+            }
+
+            .modal-footer {
+                padding: 1rem 1.5rem 1.5rem;
+                flex-direction: column;
+            }
+
+            .cancel-btn,
+            .submit-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .rating-stars {
+                gap: 0.25rem;
+            }
+
+            .star {
+                font-size: 1.25rem;
+            }
+
+            .notification {
+                top: 1rem;
+                right: 1rem;
+                left: 1rem;
+                transform: translateY(-100%);
+            }
+
+            .notification.show {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</body>
+</html>
